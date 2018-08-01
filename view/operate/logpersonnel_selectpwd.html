@@ -1,0 +1,143 @@
+{% extends "./base_toAdd.html" %}
+{% block customTitle_src %}
+<div class="ibox-title">
+	<h5>物流管理</h5>
+</div>
+{% endblock %} 
+{% block form_top %}
+{% endblock %}
+{% block form %}
+<div class="addsmark-box" id="Addsmark">
+	<div class="addsmark flex-box">
+		<div class="left">新密码:</div>
+		<input class="input-w" type="password" value=""/>
+	</div>
+	<!--<div class="addsmark flex-box">
+		<div class="left">管辖柜子组:</div>
+		<div class="logper-box">
+			<div class="flex-box-enter" onclick="Opensmark($(this))">
+				<span>请选择所管辖柜子组</span>
+				<img src="/static/hplus/img/icon_down.png" style="width: 16px;height: 9px;" />
+			</div>
+			<div class="smark-box" id="Smarkbox">
+				<ul>
+				</ul>
+				<div class="btn-box flex-box-center" style="border-top: 1px solid #e5e5e5;">
+					<div class="btn btn-primary" onclick="Truesmark()">确定</div>
+				</div>
+			</div>
+		</div>
+	</div>-->
+</div>
+<!--<script>
+	$(function(){
+		var smarkgroupdata ='{{smarkgroupdata | safe}}';
+		var temp = '{{logperdata_format | safe}}';
+		smarkgroupdata = JSON.parse(smarkgroupdata);
+		temp=JSON.parse(temp);
+		var data ='';
+		for(var i=0;i<smarkgroupdata.length;i++){
+			var num =0;
+			for (var j=0; j<temp.length;j++){
+				if(smarkgroupdata[i].id==temp[j].id){
+					num=1;
+				}
+			}
+		   if(num==1){
+			data+='<li class="flex-box"><input type="checkbox" name="smarkgroup" checked="checked" value="'+smarkgroupdata[i].id+'" />'+smarkgroupdata[i].groupName+'</li>'		   	
+		   }else{
+			data+='<li class="flex-box"><input type="checkbox" name="smarkgroup" value="'+smarkgroupdata[i].id+'" />'+smarkgroupdata[i].groupName+'</li>'		   
+		   }
+		   console.log(i);
+		}
+		console.log(data)
+		$("#Smarkbox ul").html(data);
+	})
+	
+</script>-->
+{% endblock %}
+{% block form_submit %}
+<div class="addsmark-btn-box flex-box-center">
+	<div class="btn btn-primary btn-xs" data-id="{{id}}" onclick="Trueupdata($(this))">提交</div>
+	<div class="btn btn-default btn-xs" onclick="Closefixed()">取消</div>
+</div>
+<script>
+	// 手机号判断
+	function  phoneTF(data) {
+	    if ((/^1[34578]\d{9}$/.test(data))) {
+	      return true
+	    } else {
+	      return false
+	    }
+	  };
+	//打开可选管辖柜子列表
+	var groupdata={
+		id:'',
+		passWord:'',
+	};
+	function Opensmark(){
+		if($("#Smarkbox").is(':hidden')){
+			$("#Smarkbox").show()
+		}else{
+			$("#Smarkbox").hide()
+		}
+	}
+	//确定管辖柜子
+//	function Truesmark(){
+//		groupdata.cabinetNamelist=[];
+//		for(var i =0; i<$("#Smarkbox ul li").length;i++){
+//			var data ={
+//				id:''
+//			};
+//			if($("#Smarkbox ul li").eq(i).find("input").is(':checked')){
+//				data.id=$("#Smarkbox ul li").eq(i).find("input").val()
+//				groupdata.cabinetNamelist.push(data);
+//			}
+//		}
+//		if(groupdata.cabinetNamelist.length !=0){
+//			$("#Addsmark").find("span").eq(0).text("已选择所管辖柜子组");
+//		}else{
+//			$("#Addsmark").find("span").eq(0).text("请选择所管辖柜子组")
+//		}
+//		$("#Smarkbox").hide();
+//		console.log("2",groupdata.cabinetNamelist.length==0)
+//	}
+	//关闭弹窗
+    function Closefixed(){
+    	var index = parent.layer.getFrameIndex(window.name);
+		parent.layer.close(index);
+    }
+    //确认修改
+    function Trueupdata(obj){
+    		groupdata.passWord=$("#Addsmark").find("input").eq(0).val();
+    		groupdata.id=obj.attr("data-id");
+    	console.log(groupdata)
+    	if(groupdata.passWord!=''){
+			$.ajax({
+	    		type:"post",
+	    		url:"updatelogisticspwd",
+	    		async:true,
+	    		contentType: 'application/json',
+	    		data: JSON.stringify(groupdata),
+	    		success:function(data){
+	    			if(data.status==0){
+	    				layer.msg('编辑成功');
+						var index = parent.layer.getFrameIndex(window.name);
+						setTimeout(function(){
+							parent.layer.close(index);
+							window.parent.location.reload()
+							}, 1000);
+	    			}else{
+	    				layer.msg(data.msg);
+	    			}
+	    		}
+	    	});    		
+    	}else{
+    	 	layer.msg('新密码不能为空');
+    	}
+    	
+    }
+</script>
+{% endblock %}
+{% block form_scr %}
+{% endblock %}

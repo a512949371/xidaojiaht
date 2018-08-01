@@ -1,0 +1,124 @@
+{% extends "./base_toAdd.html" %}
+{% block customTitle_src %}
+<div class="ibox-title">
+	<h5>分组管理</h5>
+</div>
+{% endblock %} 
+{% block form_top %}
+{% endblock %}
+{% block form %}
+<div class="form" id="Addsmark">
+	<div class="form-item">
+		<label class="desc">组别名称</label>
+		<input type="text" name="groupName" placeholder="请输入组别名称"
+		 data-rule="required;groupName;" data-msg-required="请输入组别名称">
+	</div>
+	<div class="form-item form-item1">
+		<label class="desc">所在范围</label>
+		<input type="text" name="scope" placeholder="请输入所在范围"
+		data-rule="required;scope;" data-msg-required="请输入所在范围" style="width: 230px;">
+		<span class="map" onclick="Openmap($(this))"><img src="/static/hplus/img/icon_map.png"></span>
+	</div>
+	<div class="form-item">
+		<label class="desc">所属物流</label>
+		<select name="gender" data-rule="required" data-msg-required="选择物流人员">
+			<option value="" selected="selected">选择物流人员</option>
+			{% for item in sglogdata %}
+			<option value="{{item.id}}">{{item.name}}</option>
+			{% endfor %}
+		</select>
+	</div>
+	<div class="form-item form-button form-button2">
+		<a class="btn btn-primary btn-xs" id="{{clothesonedata.id}}" onclick="Trueupdata($(this))">提交</a>
+		<a class="btn btn-default btn-xs" onclick="Closefixed()">取消</a>
+	</div>
+</div>
+<!-- <div class="addsmark-box" id="Addsmark">
+	<div class="addsmark flex-box">
+		<div class="left">组别名称:</div>
+		<input class="input-w" type="text"/>
+	</div>
+	<div class="addsmark flex-box">
+		<div class="left">所在范围:</div>
+		<input class="input-w" type="text"/>
+		<span class="map" onclick="Openmap($(this))"><img src="/static/hplus/img/icon_map.png"></span>
+	</div>
+	<div class="addsmark flex-box">
+		<div class="left">所属物流:</div>
+		<select class="select-w">
+			<option value="">选择物流人员</option>
+			{% for item in sglogdata %}
+			<option value="{{item.id}}">{{item.name}}</option>
+			{% endfor %}
+		</select>
+	</div>
+</div> -->
+{% endblock %}
+{% block form_submit %}
+<!-- <div class="addsmark-btn-box flex-box-center">
+	<div class="btn btn-success btn-xs" data-id="{{clothesonedata.id}}" onclick="Trueupdata($(this))">确认提交</div>
+	<div class="btn btn-primary btn-xs" onclick="Closefixed()">取消</div>
+</div> -->
+<script>
+	//关闭弹窗
+    function Closefixed(){
+    	var index = parent.layer.getFrameIndex(window.name);
+		parent.layer.close(index);
+    }
+    //确认修改
+    function Trueupdata(obj){
+    	let data ={
+    		groupName:$("#Addsmark").find("input").eq(0).val(),
+    		scope:$("#Addsmark").find("input").eq(1).val(),
+    		courierId:$("#Addsmark").find("select :selected").val(),
+    		latitude:sessionStorage.getItem("latitude")||'',
+    		longitude:sessionStorage.getItem("longitude")||''
+    	}
+    	console.log(data)
+    	if(data.name!=''&&data.address!=''&&data.latitude!=''&&data.longitude!=''){
+			$.ajax({
+	    		type:"post",
+	    		url:"addsmarkgroupinfo",
+	    		async:true,
+	    		data:data,
+	    		success:function(data){
+	    			if(data.status==0){
+	    				layer.msg('新增成功');
+	    				sessionStorage.removeItem("latitude");
+	    				sessionStorage.removeItem("longitude");
+						var index = parent.layer.getFrameIndex(window.name);
+						setTimeout(function(){
+							parent.layer.close(index);
+							window.parent.location.reload()
+							}, 1000);
+	    			}else{
+	    				layer.msg(data.msg);
+	    			}
+	    		}
+	    	});    		
+    	}else{
+    		if(data.name==''){
+    			layer.msg('组别名称不能为空');
+    		}else if(data.name==''){
+    			layer.msg('地址不能为空');
+    		}else{
+    			layer.msg('地址坐标不能为空');
+    		}
+    	}
+    	
+    }
+    //打开地图
+    function Openmap(obj){
+ 		layer.open({
+			  type: 2,
+			  title: '选择位置',
+			  shadeClose: true,
+			  shade: 0.8,
+			  area: ['600px', '600px'],
+			  content: '/operate/smarklist/additude?longitude=102.767143&latitude=24.952912' //iframe的url
+			});
+ 	}
+</script>
+{% endblock %}
+{% block form_scr %}
+{% endblock %}

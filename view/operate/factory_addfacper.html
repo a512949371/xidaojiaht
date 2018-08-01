@@ -1,0 +1,130 @@
+{% extends "./base_toAdd.html" %}
+{% block customTitle_src %}
+<div class="ibox-title">
+	<h5>工厂管理</h5>
+</div>
+{% endblock %} 
+{% block form_top %}
+{% endblock %}
+{% block form %}
+<div class="form" id="Addsmark">
+	<div class="form-item">
+		<label class="desc">姓名</label>
+		<input type="text" name="name" placeholder="请输入姓名"
+		data-rule="required;name;" data-msg-required="请输入姓名">
+	</div>
+	<div class="form-item">
+			<label class="desc">员工账号</label>
+		<input type="text" name="userName" placeholder="请输入员工账号"
+			data-rule="required; userName" data-msg-required="请输入员工账号">
+	</div>
+	<div class="form-item">
+			<label class="desc">手机号</label>
+		<input type="text" name="phone" placeholder="请输入手机号"
+			data-rule="required; phone" data-msg-required="请输入手机号">
+	</div>
+	<div class="form-item">
+			<label class="desc">初始密码</label>
+		<input type="password" name="password" placeholder="请输入初始密码"
+			data-rule="required; passWord" data-msg-required="请输入初始密码">
+	</div>
+	<div class="form-item form-button">
+		<a class="btn btn-primary btn-xs" id="{{clothesonedata.id}}" onclick="Trueupdata($(this))">提交</a>
+		<a class="btn btn-default btn-xs" onclick="Closefixed()">取消</a>
+	</div>
+</div>
+<!-- <div class="addsmark-box" id="Addsmark">
+	<div class="addsmark flex-box">
+		<div class="left">姓名:</div>
+		<input class="input-w" type="text"/>
+	</div>
+	<div class="addsmark flex-box">
+		<div class="left">员工账号:</div>
+		<input class="input-w" type="text"/>
+	</div>
+	<div class="addsmark flex-box">
+		<div class="left">手机号:</div>
+		<input class="input-w" type="text"/>
+	</div>
+	<div class="addsmark flex-box">
+		<div class="left">初始密码:</div>
+		<input class="input-w" type="password"/>
+	</div>
+</div> -->
+{% endblock %}
+{% block form_submit %}
+<!-- <div class="addsmark-btn-box flex-box-center">
+	<div class="btn btn-success btn-xs" data-id="{{clothesonedata.id}}" onclick="Trueupdata($(this))">确认提交</div>
+	<div class="btn btn-primary btn-xs" onclick="Closefixed()">取消</div>
+</div> -->
+<script>
+	//手机号判断
+	function  phoneTF(data) {
+	    if ((/^1[34578]\d{9}$/.test(data))) {
+	      return true
+	    } else {
+	      return false
+	    }
+	  };
+	//打开可选管辖柜子列表
+	var groupdata={
+		name:'',
+		phone:'',
+		passWord:'',
+		userName:'',
+	};
+	function Opensmark(){
+		if($("#Smarkbox").is(':hidden')){
+			$("#Smarkbox").show()
+		}else{
+			$("#Smarkbox").hide()
+		}
+	}
+	//关闭弹窗
+    function Closefixed(){
+    	var index = parent.layer.getFrameIndex(window.name);
+		parent.layer.close(index);
+    }
+    //确认修改
+    function Trueupdata(obj){
+    		groupdata.name=$("#Addsmark").find("input").eq(0).val(),
+    		groupdata.userName=$("#Addsmark").find("input").eq(1).val(),
+    		groupdata.phone=$("#Addsmark").find("input").eq(2).val(),
+    		groupdata.passWord=$("#Addsmark").find("input").eq(3).val(),
+    	console.log(groupdata)
+    	if(groupdata.name!=''&&groupdata.userName!=''&&phoneTF(groupdata.phone)&&groupdata.passWord!=''){
+			$.ajax({
+	    		type:"post",
+	    		url:"addfacperdata",
+	    		async:true,
+	    		data:groupdata,
+	    		success:function(data){
+	    			if(data.status==0){
+	    				layer.msg('新增成功');
+						var index = parent.layer.getFrameIndex(window.name);
+						setTimeout(function(){
+							parent.layer.close(index);
+							window.parent.location.reload()
+							}, 1000);
+	    			}else{
+	    				layer.msg(data.msg);
+	    			}
+	    		}
+	    	});    		
+    	}else{
+    		if(groupdata.name==''){
+    			layer.msg('姓名不能为空');
+    		}else if(groupdata.userName==''){
+    			layer.msg('用户名不能为空');
+    		}else if(!phoneTF(groupdata.phone)){
+    			layer.msg('请输入正确的手机号');
+    		}else{
+    			layer.msg('密码不能为空');
+    		}
+    	}
+    	
+    }
+</script>
+{% endblock %}
+{% block form_scr %}
+{% endblock %}

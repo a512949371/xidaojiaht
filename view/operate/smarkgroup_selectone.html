@@ -1,0 +1,103 @@
+{% extends "./base_toAdd.html" %}
+{% block customTitle_src %}
+<div class="ibox-title">
+	<h5>分组管理</h5>
+</div>
+{% endblock %} 
+{% block form_top %}
+{% endblock %}
+{% block form %}
+<div class="addsmark-box" id="Addsmark">
+	<div class="addsmark flex-box" style=" margin: 35px -15px;">
+		<div class="left">组别名称:</div>
+		<input class="input-w" type="text" value="{{smarkinfo.groupName}}"/>
+	</div>
+	<div class="addsmark flex-box" style=" margin: 35px -15px;">
+		<div class="left">所在范围:</div>
+		<input class="input-w" type="text" value="{{smarkinfo.scope}}"/>
+		<span class="map" onclick="Openmap($(this))" data-longitude = "{{smarkinfo.longitude}}" data-latitude = "{{smarkinfo.latitude}}"><img src="/static/hplus/img/icon_map.png"></span>
+	</div>
+	<div class="addsmark flex-box" style=" margin: 35px -15px;">
+		<div class="left">所属物流:</div>
+		<select class="select-w">
+			{% for item in sglogdata %}
+			 {% if item.id == smarkinfo.courierId %}
+			<option value="{{item.id}}" selected="selected">{{item.name}}</option>
+			{% else %}
+			<option value="{{item.id}}" >{{item.name}}</option>
+			{% endif %}
+			{% endfor %}
+		</select>
+	</div>
+</div>
+{% endblock %}
+{% block form_submit %}
+<div class="addsmark-btn-box flex-box-center" style=" margin: 35px -15px;">
+	<div class="btn btn-primary btn-xs" data-id="{{smarkinfo.id}}" onclick="Trueupdata($(this))">提交</div>
+	<div class="btn btn-default btn-xs" onclick="Closefixed()">取消</div>
+</div>
+<script>
+	//关闭弹窗
+    function Closefixed(){
+    	var index = parent.layer.getFrameIndex(window.name);
+		parent.layer.close(index);
+    }
+    //确认修改
+    function Trueupdata(obj){
+    	let data ={
+    		id:obj.attr("data-id"),
+    		groupName:$("#Addsmark").find("input").eq(0).val(),
+    		scope:$("#Addsmark").find("input").eq(1).val(),
+    		courierId:$("#Addsmark").find("select :selected").val(),
+    		latitude:sessionStorage.getItem("latitude")||'',
+    		longitude:sessionStorage.getItem("longitude")||''
+    	}
+    	console.log(data)
+    	if(data.name!=''&&data.address!=''&&data.latitude!=''&&data.longitude!=''){
+			$.ajax({
+	    		type:"post",
+	    		url:"updatesmarkgroup",
+	    		async:true,
+	    		data:data,
+	    		success:function(data){
+	    			if(data.status==0){
+	    				layer.msg('编辑成功');
+	    				sessionStorage.removeItem("latitude");
+	    				sessionStorage.removeItem("longitude");
+						var index = parent.layer.getFrameIndex(window.name);
+						setTimeout(function(){
+							parent.layer.close(index);
+							window.parent.location.reload()
+							}, 1000);
+	    			}else{
+	    				layer.msg(data.msg);
+	    			}
+	    		}
+	    	});    		
+    	}else{
+    		if(data.name==''){
+    			layer.msg('组别名称不能为空');
+    		}else if(data.name==''){
+    			layer.msg('地址不能为空');
+    		}else{
+    			layer.msg('地址坐标不能为空');
+    		}
+    		
+    	}
+    	
+    }
+    //打开地图
+    function Openmap(obj){
+ 		layer.open({
+			  type: 2,
+			  title: '选择位置',
+			  shadeClose: true,
+			  shade: 0.8,
+			  area: ['600px', '600px'],
+			  content: '/operate/smarklist/additude?longitude='+obj.attr("data-longitude")+'&latitude='+obj.attr("data-latitude") //iframe的url
+			});
+ 	}
+</script>
+{% endblock %}
+{% block form_scr %}
+{% endblock %}

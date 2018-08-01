@@ -1,0 +1,134 @@
+{% extends "./base_toAdd.html" %}
+{% block form_top %}
+{% endblock %}
+{% block form %}
+ <div class="smark-box">
+ 	<div class="flex-box-enter smark">
+ 		<div class="desc">柜子编号:</div>
+ 		<div class="desc">{{smarkdata.cabinetNo}}</div>
+ 	</div>
+ 	<div class="flex-box-enter smark">
+ 		<div class="desc">柜子名称:</div>
+ 		<div class="desc">{{smarkdata.name}}</div>
+ 	</div>
+ 	<div class="flex-box-enter smark">
+ 		<div class="desc">所在位置:</div>
+ 		<div class="desc" onclick="Openmap($(this))" data-longitude = "{{smarkdata.longitude}}" data-latitude = "{{smarkdata.latitude}}">
+ 			<div class="flex-box">
+ 				<span>{{smarkdata.address}}</span>
+ 				<span class="map"><img src="/static/hplus/img/icon_map.png"></span>
+ 			</div>
+ 		</div>
+ 	</div>
+ 	<div class="flex-box-enter smark">
+ 		<div class="desc">添加时间:</div>
+ 		<div class="desc">{{smarkdata.cteateTime}}</div>
+ 	</div>
+ 	<div class="flex-box-enter smark">
+ 		<div class="desc">空闲百分比:</div>
+ 		<div class="desc">{{smarkdata.freeList.proportion}}</div>
+ 	</div>
+ 	<div class="smark-status">
+ 		<div class="flex-box">
+ 			<div class="list-box">
+ 				<div class="flex-box">
+ 				<div class="listtwo {% if smarkdata.cabinetBoxlist[0].status=='-1'%}color-4{% elif smarkdata.cabinetBoxlist[0].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBoxlist[0].status}}{% endif %} ">{{smarkdata.cabinetBoxlist[0].boxId}}</div>
+ 				<div class="listtwo {% if smarkdata.cabinetBoxlist[1].status=='-1'%}color-4{% elif smarkdata.cabinetBoxlist[1].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBoxlist[1].status}}{% endif %}">{{smarkdata.cabinetBoxlist[1].boxId}}</div>
+ 				</div>
+ 			</div>
+ 			<div class="list-box">
+ 				<div class="flex-box">
+ 				<div class="listtwo {% if smarkdata.cabinetBoxlist[2].status=='-1'%}color-4{% elif smarkdata.cabinetBoxlist[2].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBoxlist[2].status}}{% endif %}">{{smarkdata.cabinetBoxlist[2].boxId}}</div>
+ 				<div class="listtwo {% if smarkdata.cabinetBoxlist[3].status=='-1'%}color-4{% elif smarkdata.cabinetBoxlist[3].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBoxlist[3].status}}{% endif %}">{{smarkdata.cabinetBoxlist[3].boxId}}</div>
+ 				</div>
+ 			</div>
+ 			<div class="list-box" style="border-bottom: 1px solid #e5e5e5;">
+ 				
+ 			</div>
+ 			<div class="list-box">
+ 				<div class="listone {% if smarkdata.cabinetBox[3].status=='-1'%}color-4{% elif smarkdata.cabinetBox[3].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBox[3].status}}{% endif %}">{{smarkdata.cabinetBox[3].boxId}}</div>
+ 				<div class="listone {% if smarkdata.cabinetBox[4].status=='-1'%}color-4{% elif smarkdata.cabinetBox[4].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBox[4].status}}{% endif %}">{{smarkdata.cabinetBox[4].boxId}}</div>
+ 				<div class="listone {% if smarkdata.cabinetBox[5].status=='-1'%}color-4{% elif smarkdata.cabinetBox[5].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBox[5].status}}{% endif %}">{{smarkdata.cabinetBox[5].boxId}}</div>
+ 			</div>
+ 			<div class="list-box">
+ 				<div class="listone {% if smarkdata.cabinetBox[9].status=='-1'%}color-4{% elif smarkdata.cabinetBox[9].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBox[9].status}}{% endif %}">{{smarkdata.cabinetBox[9].boxId}}</div>
+ 				<div class="listone {% if smarkdata.cabinetBox[10].status=='-1'%}color-4{% elif smarkdata.cabinetBox[10].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBox[10].status}}{% endif %}">{{smarkdata.cabinetBox[10].boxId}}</div>
+ 				<div class="listone {% if smarkdata.cabinetBox[11].status=='-1'%}color-4{% elif smarkdata.cabinetBox[11].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBox[11].status}}{% endif %}">{{smarkdata.cabinetBox[11].boxId}}</div>
+ 			</div>
+ 		</div>
+ 		<div class="flex-box">
+ 			<div class="list-box">
+ 				<div class="flex-box">
+ 				<div class="listtwo {% if smarkdata.cabinetBoxlist[4].status=='-1'%}color-4{% elif smarkdata.cabinetBoxlist[4].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBoxlist[4].status}}{% endif %}">{{smarkdata.cabinetBoxlist[4].boxId}}</div>
+ 				<div class="listtwo {% if smarkdata.cabinetBoxlist[5].status=='-1'%}color-4{% elif smarkdata.cabinetBoxlist[5].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBoxlist[5].status}}{% endif %}">{{smarkdata.cabinetBoxlist[5].boxId}}</div>
+ 				</div>
+ 			</div>
+ 			<div class="list-box">
+ 				<div class="flex-box">
+ 				<div class="listtwo {% if smarkdata.cabinetBoxlist[6].status=='-1'%}color-4{% elif smarkdata.cabinetBoxlist[6].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBoxlist[6].status}}{% endif %}">{{smarkdata.cabinetBoxlist[6].boxId}}</div>
+ 				<div class="listtwo {% if smarkdata.cabinetBoxlist[7].status=='-1'%}color-4{% elif smarkdata.cabinetBoxlist[7].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBoxlist[7].status}}{% endif %}">{{smarkdata.cabinetBoxlist[7].boxId}}</div>
+ 				</div>
+ 			</div>
+ 			<div class="list-box">
+ 				<div class="listthree {% if smarkdata.cabinetBox[0].status=='-1'%}color-4{% elif smarkdata.cabinetBox[0].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBox[0].status}}{% endif %}">{{smarkdata.cabinetBox[0].boxId}}</div>
+ 				<div class="listthree {% if smarkdata.cabinetBox[1].status=='-1'%}color-4{% elif smarkdata.cabinetBox[1].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBox[1].status}}{% endif %}">{{smarkdata.cabinetBox[1].boxId}}</div>
+ 				<div class="listthree {% if smarkdata.cabinetBox[2].status=='-1'%}color-4{% elif smarkdata.cabinetBox[2].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBox[2].status}}{% endif %}">{{smarkdata.cabinetBox[2].boxId}}</div>
+ 			</div>
+ 			<div class="list-box">
+ 				<div class="listone {% if smarkdata.cabinetBox[6].status=='-1'%}color-4{% elif smarkdata.cabinetBox[6].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBox[6].status}}{% endif %}">{{smarkdata.cabinetBox[6].boxId}}</div>
+ 				<div class="listone {% if smarkdata.cabinetBox[7].status=='-1'%}color-4{% elif smarkdata.cabinetBox[7].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBox[7].status}}{% endif %}">{{smarkdata.cabinetBox[7].boxId}}</div>
+ 				<div class="listone {% if smarkdata.cabinetBox[8].status=='-1'%}color-4{% elif smarkdata.cabinetBox[8].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBox[8].status}}{% endif %}">{{smarkdata.cabinetBox[8].boxId}}</div>
+ 			</div>
+ 			<div class="list-box">
+ 				<div class="listone {% if smarkdata.cabinetBox[12].status=='-1'%}color-4{% elif smarkdata.cabinetBox[12].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBox[12].status}}{% endif %}">{{smarkdata.cabinetBox[12].boxId}}</div>
+ 				<div class="listone {% if smarkdata.cabinetBox[13].status=='-1'%}color-4{% elif smarkdata.cabinetBox[13].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBox[13].status}}{% endif %}">{{smarkdata.cabinetBox[13].boxId}}</div>
+ 				<div class="listone {% if smarkdata.cabinetBox[14].status=='-1'%}color-4{% elif smarkdata.cabinetBox[14].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBox[14].status}}{% endif %}">{{smarkdata.cabinetBox[14].boxId}}</div>
+ 			</div> 			
+ 		</div>
+ 	</div>
+ 	<div class="flex-box-center mt10">
+ 		<div class="status-color">
+ 			<div class="flex-box"><span class="color-block color-1"></span><span>使用中({{smarkdata.useList.proportion}})</span></div>
+ 		</div>
+ 		<div class="status-color">
+ 			<div class="flex-box"><span class="color-block color-0"></span><span>空闲({{smarkdata.freeList.proportion}})</span></div>
+ 		</div>
+ 		<div class="status-color">
+ 			<div class="flex-box"><span class="color-block color-4"></span><span>禁用({{smarkdata.disableList.proportion}})</span></div>
+ 		</div>
+ 	</div>
+ 	<div class="flex-box-center mt10">
+ 		<div class="status-color">
+ 			<div class="flex-box"><span class="color-block color-2"></span><span>已放件({{smarkdata.takeList.proportion}})</span></div>
+ 		</div>
+ 		<div class="status-color">
+ 			<div class="flex-box"><span class="color-block color-3"></span><span>待取衣({{smarkdata.abnormalList.proportion}})</span></div>
+ 		</div>
+ 		<div class="status-color">
+ 		</div>
+ 	</div>
+ </div>
+ <script>
+ 	function Openmap(obj){
+ 		layer.open({
+			  type: 2,
+			  title: '所在位置',
+			  shadeClose: true,
+			  shade: 0.8,
+			  area: ['580px', '600px'],
+			  content: 'lookmap?longitude='+obj.attr("data-longitude")+'&latitude='+obj.attr("data-latitude") //iframe的url
+			});
+ 	}
+ </script>
+{% endblock %}
+{% block form_submit %}
+<div class="btn-box flex-box-center mt20">
+	<div class="btn btn-default" onclick="Closefixed()">取消</div>
+</div>
+<script>
+	function Closefixed(){
+		var index = parent.layer.getFrameIndex(window.name);
+		parent.layer.close(index);
+	}
+</script>
+{% endblock %}

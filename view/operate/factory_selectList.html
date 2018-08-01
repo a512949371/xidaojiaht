@@ -1,0 +1,146 @@
+{% extends "./base_list.html" %}
+{% block customTitle_src %}
+<div class="ibox-title">
+	<h5>工厂管理</h5>
+</div>
+{% endblock %} 
+{% block content_top %}
+{% if facordersta %}
+{% else %}
+<div class="factory-box">
+	<h3>工厂概况:</h3>
+	<div>
+		<ul class="flex-box">
+			<li>
+				<div class="number">{{facorderdata.waitingSingle}}</div>
+				<div class="desc">待检单></div>
+			</li>
+			<li>
+				<div class="number">{{facorderdata.waitingPacked}}</div>
+				<div class="desc">待打包出库></div>
+			</li>
+			<li>
+				<div class="number">{{facorderdata.alwaysCheck}}</div>
+				<div class="desc">总检单数></div>
+			</li>
+			<li>
+				<div class="number">{{facorderdata.outbound}}</div>
+				<div class="desc">总出库单数></div>
+			</li>
+			<li>{{ceshi['/manage/menu/update']}}{{facordersta}}</li>
+		</ul>
+	</div>
+</div>
+{% endif %}
+<div class="flex-box-enter">
+		<div>&nbsp;</div>
+	<div>
+		{% if Btn['factory/factoryper/insert'] %}
+		<div class="top-search-box">
+		<div class="qcode-box" onclick="Adddetail($(this))"><i class="fa fa-plus" style="padding-right: 5px;"></i>新增</div>
+		</div>
+		{% endif %}
+	</div>
+</div>
+<script>
+	function Adddetail(){
+		layer.open({
+		  type: 2,
+		  title: '新增工厂人员',
+		  shadeClose: true,
+		  shade: 0.8,
+		  area: ['600px', '350px'],
+		  content: 'addfacper' //iframe的url
+		});
+	}
+</script>
+{% endblock %}
+{% block search_bt %}
+{% endblock %}
+{% block table_th %}
+	<th>编号</th>
+	<th>姓名</th>
+	<th>员工账号</th>
+	<th>手机号</th>
+	<th>今日检单单数</th>
+	<th>今日打包单数</th>
+	<th>总完成单数</th>
+	<th>添加时间</th>
+	<th>操作</th>
+{% endblock %}
+{% block table_body %}
+{% for item in pageInfo.list %}
+<tr class="gradeX">
+	<td><input type="checkbox" name="ids" value="{{item.id}}"/></td>
+	<td>{{item.id}}</td>
+	<td>{{item.name}}</td>
+	<td>{{item.userName}}</td>
+	<td>{{item.phone}}</td>
+	<td>{{item.todayCheck}}</td>
+	<td>{{item.todayPack}}</td>
+	<td>{{item.allOrderPack}}</td>
+	<td>{{item.createTime}}</td>
+	<td>
+		{% if Btn['factory/factoryper/select'] %}
+		<button type="button" class="btn btn-primary btn-xs" data-id = "{{item.id}}" onclick="Lookdetail($(this))">
+				<i class="fa fa-pencil" style="padding-right: 5px;"></i>修改</button>
+		{% endif %}
+		{% if Btn['factory/factoryper/password'] %}
+		<button type="button" class="btn btn-warning btn-xs" data-id = "{{item.id}}" onclick="Selectpwd($(this))">
+				<i class="fa fa-pencil" style="padding-right: 5px;"></i>修改密码</button>
+		{% endif %}
+		{% if Btn['factory/factoryper/delete'] %}
+		<button type="button" class="btn btn-danger btn-xs" data-id = "{{item.id}}" onclick="Deletedetail($(this))">
+				<i class="fa fa-trash" style="padding-right: 5px;"></i>删除</button>
+		{% endif %}
+	</td>
+</tr>
+{% endfor %}
+<script>
+	function Lookdetail(obj){
+		layer.open({
+			  type: 2,
+			  title: '查看物流人员详情',
+			  shadeClose: true,
+			  shade: 0.8,
+			  area: ['600px', '300px'],
+			  content: 'selectone?id='+obj.attr("data-id") //iframe的url
+			});
+	}
+	//修改密码
+	function Selectpwd(obj){
+		layer.open({
+			  type: 2,
+			  title: '修改密码',
+			  shadeClose: true,
+			  shade: 0.8,
+			  area: ['400px', '250px'],
+			  content: 'selectpwd?id='+obj.attr("data-id") //iframe的url
+			});
+	}
+	function Deletedetail(obj){
+		layer.confirm('您确定要删除该工厂人员？', {
+		  btn: ['是的','取消'] //按钮
+		}, function(){
+		  $.ajax({
+		  	type:"get",
+		  	url:"removefacper?id="+obj.attr("data-id"),
+		  	async:true,
+		  	success:function(data){
+		  		if(data.status==0){
+		  			layer.msg('删除成功');
+		  			setTimeout(function(){
+		  				window.location.reload()
+		  			},1000)
+		  		}else{
+		  			layer.msg(data.msg);
+		  		}
+		  		
+		  	}
+		  });
+		}, function(){
+		  console.log("取消")
+		});
+	}
+</script>
+{% endblock %}

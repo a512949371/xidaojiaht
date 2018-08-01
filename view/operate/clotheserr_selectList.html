@@ -1,0 +1,171 @@
+{% extends "./base_list.html" %}
+{% block customTitle_src %}
+ <div class="ibox-title">
+ 	<a class="clothes-abox " href="/operate/clothes/selectList">衣物类型</a>
+ 	<a class="clothes-abox ml10 " href="/operate/clothestype/selectList">衣物类别</a>
+ 	<a class="clothes-abox ml10" href="/operate/clothescolor/selectList">颜色</a>
+ 	<a class="clothes-abox ml10 " href="/operate/clothesbrand/selectList">品牌</a>
+ 	<a class="clothes-abox ml10 active" href="/operate/clotheserr/selectList">瑕疵</a>
+ </div>
+{% endblock %}
+{% block content_top %}
+<div class="flex-box-enter">
+		<div>&nbsp;</div>
+	{% if Btn['operate/clothes/insert'] %}
+	<div class="qcode-box" onclick="Lookdetail($(this),'1')"><i class="fa fa-plus" style="padding-right: 5px;"></i>新增</div>
+   {% endif %}
+</div>
+{% endblock %}
+{% block search_bt %}
+{% endblock %}
+{% block table_th %}
+	<th>编号</th>
+	<th>瑕疵</th>
+	<th>创建时间</th>
+	<th>操作</th>
+{% endblock %}
+{% block table_body %}
+{% for item in pageInfo.list %}
+<tr class="gradeX">
+	<td><input type="checkbox" name="ids" value="{{item.clothesParamsId}}"/></td>
+	<td>{{item.clothesParamsId}}</td>
+	<td>{{item.name}}</td>
+	<td>{{item.createTime}}</td>
+	<td>
+		{% if Btn['operate/clothes/select'] %}
+		<button type="button" class="btn btn-primary btn-xs" data-img="{{item.classAppImg}}" data-id="{{item.clothesParamsId}}" onclick="Lookdetail($(this),'2')">
+				<i class="fa fa-pencil" style="padding-right: 5px;"></i>修改</button>
+		{% endif %}
+		{% if Btn['operate/clothes/delete'] %}
+		<button type="button" class="btn btn-danger btn-xs" onclick="Deletebyid('{{item.clothesParamsId}}')">
+				<i class="fa fa-trash" style="padding-right: 5px;"></i>删除</button>
+		{% endif %}
+	</td>
+</tr>
+{% endfor %}
+<script>
+	function Lookdetail(id){
+		
+	}
+</script>
+{% endblock %}
+{% block shawbox %}
+ <div class="fixed-box" id="Fixedbox">
+ 	<div class="tit flex-box-enter">
+ 		<span>添加衣物瑕疵</span>
+ 		<span class="cursor-p" onclick="Closefixed()">X</span>
+ 	</div>
+	<div class="gray-bg">
+		<div class="wrapper wrapper-content animated fadeInRight">
+				<!-- <div class="form-box ibox-content">
+						<form class="form" data-validator-option="{timely:2}">
+						<div class="form-item">
+							<label class="desc">衣物瑕疵</label>
+							<input type="text" name="chargeAmount" placeholder="请输入衣物瑕疵"
+							 data-rule="required; chargeAmount" data-msg-required="请输入衣物瑕疵">
+						</div>
+						<div class="form-item form-button">
+							<button class="btn btn-primary btn-xs" onclick="Insertdata()" type="submit">提交</button>
+							<button class="btn btn-default btn-xs" onclick="Closefixed()">取消</button>
+						</div>
+						</form>
+				</div> -->
+			<div class="form-box ibox-content from">
+				<div class="form-item">
+					<label class="desc">衣物瑕疵</label>
+					<input type="text" name="chargeAmount" placeholder="请输入衣物瑕疵"
+						data-rule="required; chargeAmount" data-msg-required="请输入衣物瑕疵">
+				</div>
+				<div class="form-item form-button">
+					<a class="btn btn-primary btn-xs" onclick="Insertdata()" type="submit">提交</a>
+					<a class="btn btn-default btn-xs" onclick="Closefixed()">取消</a>
+				</div>
+			</div>
+		</div>
+	</div>
+ </div>
+<script>
+    var uploadUrl = "uploadimg";
+    function Lookdetail(obj,num){
+    	if(num==1){
+    		$("#Fixedbox").show()
+    	}
+    	if(num==2){
+    		layer.open({
+			  type: 2,
+			  title: '添加衣物瑕疵',
+			  shadeClose: true,
+			  shade: 0.8,
+			  area: ['600px', '200px'],
+			  content: 'selectone?id='+obj.attr("data-id") //iframe的url
+			}); 
+    	}
+    	
+    }
+    //关闭弹窗
+    function Closefixed(){
+    	$("#img").val("")
+    	$("#Fixedbox").hide()
+    }
+    //新增一条数据
+    function Insertdata(){
+    	let data ={
+    		name:$("#Fixedbox").find("input").eq(0).val(),
+    		type:3,
+    	}
+    	if(data.name!=''){
+    		$.ajax({
+	    		type:"post",
+	    		url:"insertclothes",
+	    		async:true,
+	    		data:data,
+	    		success:function(data){
+	    			if(data.status==0){
+	    				layer.msg('新增成功');
+	    				$("#Fixedbox").hide()
+	    				setTimeout(function(){
+	    					window.location.reload()
+	    				},2000)
+	    			}else{
+
+	    				layer.msg(data.msg);
+	    			}
+	    		}
+	    	});
+    	}else{
+    		layer.msg('瑕疵名称不能为空');
+    	}
+    	
+    }
+    //删除单条数据
+    function Deletebyid(id){
+    	let data={
+    		id:id,
+    		type:3
+    	}
+    	layer.confirm('您确定要删除该条瑕疵信息？', {
+		  btn: ['是的','取消'] //按钮
+		}, function(){
+		  $.ajax({
+    		type:"post",
+    		url:"deleteclothesparme",
+    		async:true,
+    		data:data,
+    		success:function(data){
+    			if(data.status==0){
+    				layer.msg('删除成功');
+    				setTimeout(function(){
+    					window.location.reload()
+    				},2000)
+    			}else{
+    				layer.msg(data.msg);
+    			}
+    		}
+    	});
+		}, function(){
+		  console.log("取消")
+		})
+    	
+    }
+</script>
+{% endblock %}

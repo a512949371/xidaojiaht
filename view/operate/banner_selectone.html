@@ -1,0 +1,164 @@
+{% extends "./base_toAdd.html" %}
+{% block customTitle_src %}
+<div class="ibox-title">
+	<h5>广告管理</h5>
+</div>
+{% endblock %} 
+{% block form_top %}
+{% endblock %}
+{% block form %}
+<div class="addsmark-box" id="Addbanner">
+	<div class="addsmark flex-box">
+		<div class="left">广告名称:</div>
+		<input class="input-w" type="text" value="{{bannerdata.name}}"/>
+	</div>
+	<div class="addsmark flex-box">
+		<div class="left">所在位置:</div>
+		<select class="select-w">
+			{% if bannerdata.advType==1 %}
+			<option value="1" selected="selected">首页广告</option>
+			<option value="2">锁屏广告</option>
+			{% else %}
+			<option value="1" >首页广告</option>
+			<option value="2" selected="selected">锁屏广告</option>
+			{% endif %}
+		</select>
+	</div>
+	<div class="addsmark flex-box">
+		<div class="left">顺序:</div>
+		<input class="input-w" type="text" value="{{bannerdata.sort}}"/>
+	</div>
+	<div class="addsmark flex-box">
+ 			<div class="left">图片:</div>
+ 			<div >
+ 				<input type="hidden" value=""  name="img" id="img" >
+		        <input type="file" class="form-control" id="productImg" name="imgFile" style="border:none;">
+ 			</div>
+ 		</div>
+ 		<div class="addsmark flex-box">
+ 			<div class="left"></div>
+ 			<div  style=" padding-bottom: 10px;">
+		            <img src="{{bannerdata.advimg}}" width="80" height="80" id="picImg">
+		        <input class="file_input" type="button" value="上传图片" onclick="checkImg('picImg','productImg','img')"/>
+		        <span style="color: red;">*上传图片限制小于 200kb</span>
+		    </div>
+ 		</div>
+</div>
+ <script src="/static/kindeditor/kindeditor-min.js"></script>
+<script src="/static/js/ajaxfileupload.js"></script>
+<script>
+    var uploadUrl = "uploadimg";
+    function checkImg(img,imgFile,imgUrl) {
+        var ths=$('#'+imgFile);
+        if (ths.val().length <= 0) {
+            alert("请上传图片");
+            return false;
+        } else if(!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(ths.val())){
+            alert("图片类型必须是.gif,jpeg,jpg,png中的一种");
+            ths.val("");
+            return false;
+        }
+        //效验成功调用异步上传函数
+        ajaxFileUpload(img,imgFile,imgUrl);
+        return true;
+    }
+
+    function ajaxFileUpload(img,imgFile,imgUrl) {
+        $.ajaxFileUpload
+        (
+            {
+                url: uploadUrl, //用于文件上传的服务器端请求地址
+                type: 'post',
+                secureuri: false, //是否需要安全协议，一般设置为false
+                fileElementId: imgFile, //文件上传域的ID
+                dataType: 'text', //返回值类型 一般设置为json
+                success: function (data)  //服务器成功响应处理函数
+                {
+                	data = $.parseJSON(data.replace(/<.*?>/ig,"")); 
+                	console.log(data);
+                	if(data.status==200){
+	                        console.log(data);
+	                        $("#"+imgUrl).val("/"+data.realUrl);
+	                        $('#'+img).attr("src", data.data);
+	                        $('#'+img).show();
+	                   
+                	}else{
+                		layer.msg(data.data);
+                	}
+                    
+                },
+                error: function (data)//服务器响应失败处理函数
+                {
+                    alert(data);
+                }
+            }
+        )
+        return false;
+    }
+
+</script>
+{% endblock %}
+{% block form_submit %}
+<div class="addsmark-btn-box flex-box-center">
+	<div class="btn btn-primary btn-xs" data-id="{{bannerdata.id}}" onclick="Trueupdata($(this))">提交</div>
+	<div class="btn btn-default btn-xs" onclick="Closefixed()">取消</div>
+</div>
+<script>
+	//关闭弹窗
+    function Closefixed(){
+    	var index = parent.layer.getFrameIndex(window.name);
+		parent.layer.close(index);
+    }
+    //确认修改
+    function Trueupdata(obj){
+    	let data ={
+    		id:obj.attr("data-id"),
+    		name:$("#Addbanner").find("input").eq(0).val(),
+    		advType:$("#Addbanner").find("select").eq(0).val()||'1',
+    		sort:$("#Addbanner").find("input").eq(1).val(),
+    		advimg:$("#Addbanner").find("input").eq(2).val(),
+    	}
+    	console.log(data)
+    	if(data.name!=''&&data.sort!=''){
+			$.ajax({
+	    		type:"post",
+	    		url:"updatebannerone",
+	    		async:true,
+	    		data:data,
+	    		success:function(data){
+	    			if(data.status==0){
+	    				layer.msg('编辑成功');
+						var index = parent.layer.getFrameIndex(window.name);
+						setTimeout(function(){
+							parent.layer.close(index);
+							window.parent.location.reload()
+							}, 1000);
+	    			}else{
+	    				layer.msg(data.msg);
+	    			}
+	    		}
+	    	});    		
+    	}else{
+    		if(data.name==''){
+    			layer.msg('广告名称不能为空');
+    		}else{
+    			layer.msg('排序不能为空');
+    		}
+    	}
+    	
+    }
+    //打开地图
+    function Openmap(obj){
+ 		layer.open({
+			  type: 2,
+			  title: '选择位置',
+			  shadeClose: true,
+			  shade: 0.8,
+			  area: ['600px', '600px'],
+			  content: 'additude?longitude=24.952912&latitude=102.767143' //iframe的url
+			});
+ 	}
+</script>
+{% endblock %}
+{% block form_scr %}
+{% endblock %}

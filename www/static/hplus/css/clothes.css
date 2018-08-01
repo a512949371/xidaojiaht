@@ -1,0 +1,304 @@
+.flex-box{
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.flex-box-end{
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+}
+.flex-box-enter{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.mt10{
+	margin-top: 10px;
+}
+.ibox-tit{
+	border-bottom:1px solid #e5e5e5 ;
+}
+.ibox-tit .clothes-abox{
+	padding: 10px;
+	color: #666;
+}
+.btn-box22{
+	width: 100px;
+	text-align: center;
+	padding: 5px 0;
+	background-color: #0071CE;
+	color: #FFF;
+	cursor: pointer;
+	margin-left: 10px;
+}
+.ml10{
+	margin-left: 10px;
+}
+.clothes-abox.active{
+	color: #FFF;
+	background-color: #0071CE;
+}
+.top-search-box{
+	display: flex;
+	padding:0 40px;
+}
+.top-search-box input{
+	width: 300px;
+	padding-left: 20px;
+	height: 34px;
+	line-height: 34px;
+}
+.top-search-box .btn-box{
+	width: 80px;
+	height: 34px;
+	line-height: 34px;
+	text-align: center;
+	background-color: #0071CE;
+	color: #FFF;
+	margin-left: 40px;
+	border-radius: 5px;
+	cursor: pointer;
+}
+.top-search-box select{
+	margin-left: 40px;
+	height: 34px;
+	line-height: 34px;
+}
+.qcode-box{
+	width: 100px;
+	height: 34px;
+	line-height: 34px;
+	text-align: center;
+	background-color: #0071CE;
+	color: #FFF;
+	border-radius: 5px;
+	cursor: pointer;
+}
+.classify-box{
+	text-decoration:underline;
+	color: #0055AA;
+}
+.orderdetail-box{
+	padding: 20px;
+	height: 100%;
+	box-sizing: border-box;
+	background-color: #f1f1f1;
+}
+
+.orderdetail-box .content-box{
+}
+.orderdetail-box .content-box .tit-box{
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.orderdetail-box .content-box .tit-box .close{
+	font-size: 14px;
+	color: #888;
+}
+.orderdetail-box .content-box .clothes-num-box{
+	display: flex;
+	align-items: center;
+}
+.orderdetail-box .content-box .clothes-num-box .hand-m-btn{
+	width: 120px;
+	text-align: center;
+	border: 1px solid #0071CE;
+	background-color: #0071CE;
+	color: #FFF;
+	margin: 0 20px;
+	padding: 5px 0;
+	border-radius: 5px;
+	cursor: pointer;
+}
+.orderdetail-box .content-box .clothes-num-box .automatic-btn{
+	width: 120px;
+	text-align: center;
+	border: 1px solid #0071CE;
+	background-color: #0071CE;
+	color: #FFF;
+	padding: 5px 0;
+	border-radius: 5px;
+	cursor: pointer;
+}
+.orderdetail-box .content-box .remarks-box{
+	display: flex;
+	margin-bottom: 20px;
+}
+.orderdetail-box .content-box .remarks-box textarea{
+	height: 60px;
+	line-height: 30px;
+	margin-left: 30px;
+	width: 300px;
+}
+.orderdetail-box .content-box  .trueclothes-box{
+	width: 120px;
+	padding: 8px 0;
+	text-align: center;
+	background-color: #0071CE;
+	color: #FFF;
+	cursor: pointer;
+	margin: auto;
+}
+.orderdetail-box .hand-clothes-num{
+	width: 300px;
+	padding: 10px 0;
+	display: none;
+	position: absolute;
+	top: 80px;
+	left: calc(50% - 150px);
+	z-index: 101;
+	background-color: #f1f1f1;
+	border: 1px solid #ccc;
+	font-size: 14px;
+}
+.orderdetail-box .hand-clothes-num .tit-box{
+	justify-content: flex-end;
+	height: 40px;
+	border-bottom: 1px solid #999;
+}
+.orderdetail-box .hand-clothes-num .clothes-num-box{
+	display: flex;
+	align-items: center;
+	padding: 0 20px;
+	padding-bottom: 10px;
+}
+.orderdetail-box .hand-clothes-num h3{
+	font-size: 14px;
+	font-weight: 100;
+	color: #666;
+	padding-right: 10px;
+	margin: 0;
+}
+.orderdetail-box .clothes-num{
+	margin-bottom: 10px;
+}
+.orderdetail-box .clothes-num li{
+	list-style: none;
+	width: 200px;
+	padding: 5px 0;
+	color: #666;
+	display: flex;
+	justify-content: space-between;
+}
+.orderdetail-box .hand-clothes-num .btn-box{
+	width: 120px;
+	background-color: #0071CE;
+	color: #FFF;
+	padding: 5px 0;
+	margin: auto;
+	text-align: center;
+	cursor: pointer;
+}
+.orderdetail-box .hand-clothes-num .clothes-num-box h3{
+	width: 120px;
+	margin: 0;
+}
+.orderdetail-box .hand-clothes-num .clothes-num-box select{
+	padding: 3px 0;
+	flex: 1;
+}
+.orderdetail-box .hand-clothes-num .tip{
+	color: #F00;
+	font-size: 12px;
+	padding:0 20px;
+	margin-bottom: 15px;
+}
+.table-bordered>thead>tr>th{
+	background-color: #0071CE;
+	color: #FFF;
+	border: 1px solid #0071CE;
+}
+/*捡单录入*/
+.getorderinfo-box{
+	padding: 10px 20px;
+}
+.getorderinfo-box .bord{
+	border-bottom: 1px solid #e5e5e5;
+	padding-bottom: 10px;
+}
+.getorderinfo-box .tit-box{
+	display: flex;
+	align-items: center;
+	padding-bottom: 10px;
+	padding-top: 10px;
+	border-bottom: 1px solid #e5e5e5;
+}
+.getorderinfo-box .tit-box h3{
+	font-size: 16px;
+	color: #000;
+	margin: 0;
+	font-weight: 100;
+	padding-right: 10px;
+}
+.getorderinfo-box .tit-box span{
+	margin:0 10px;
+}
+.getorderinfo-box .tit-box .desc{
+	font-size: 14px;
+	color: #666;
+	padding-left:5px ;
+}
+.getorderinfo-box .list-box{
+	width: 90%;
+	margin: 10px auto 10px auto;
+	background-color: #e5e5e5;
+	padding: 5px;
+	box-sizing: border-box;
+	height: 150px;
+	overflow-y: scroll;
+}
+.getorderinfo-box .list-box ul{
+	display: flex;
+	flex-wrap: wrap;
+	padding: 0;
+}
+.getorderinfo-box .list-box li{
+	padding: 3px 5px;
+	height: 24px;
+	box-sizing: border-box;
+	background-color: #aaa;
+	color: #FFF;
+	margin: 5px;
+	list-style: none;
+}
+.getorderinfo-box .list-box .searchbrand-box{
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+}
+.getorderinfo-box .list-box .searchbrand-box .btn-box{
+	padding: 2px 10px;
+	border: 1px solid #0071CE;
+	background-color: #0071CE;
+	color: #FFF;
+	cursor: pointer;
+}
+.getorderinfo-box .list-box .active{
+	background-color: #ddd;
+}
+.getorderinfo-box .load-more{
+	text-align: center;
+}
+#Errorderbox{
+	display: none;
+}
+.getorderinfo-box .btn{
+	width: 120px;
+	text-align: center;
+	padding: 5px 10px;
+	margin: auto;
+	margin-top: 20px;
+	border-radius: 5px;
+	display: inline-block;
+	border: 1px solid #0071CE;
+	background-color: #0071CE;
+	color: #FFF;
+}
+.layer-alert{
+	padding: 10px 20px;
+}
+.layer-alert .box{
+	padding-top: 10px;
+}

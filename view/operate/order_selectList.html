@@ -1,0 +1,212 @@
+{% extends "../operate/base_list.html" %} 
+{% block customTitle_src %}
+<div class="ibox-title">
+	<h5>订单管理</h5>
+</div>
+{% endblock %} 
+{% block content_top %}
+<div class="flex-box-enter">
+   <div class="top-search-box" >
+   	<input type="text" placeholder="请输入订单编号、会员ID、手机号" name="parame" value="{{querymodel.parame}}" />
+   	<select name="status" >
+		 {% if querymodel.status==0 %}
+		 <option value="">请选择订单状态</option>
+		 <option value="0" selected="selected">待放件</option>
+		 <option value="1">已放件</option>
+		 <option value="2">已送衣</option>
+		 <option value="3">清洗中</option>
+		 <option value="4">送回中</option>
+		 <option value="5">待取衣</option>
+		 <option value="6">待评价</option>
+		 <option value="7">已完成</option>
+		 {% elif querymodel.status==1 %}
+		 <option value="">请选择订单状态</option>
+		 <option value="0">待放件</option>
+		 <option value="1" selected="selected">已放件</option>
+		 <option value="2">已送衣</option>
+		 <option value="3">清洗中</option>
+		 <option value="4">送回中</option>
+		 <option value="5">待取衣</option>
+		 <option value="6">待评价</option>
+		 <option value="7">已完成</option>
+		 {% elif querymodel.status==2 %}
+		 <option value="">请选择订单状态</option>
+		 <option value="0">待放件</option>
+		 <option value="1">已放件</option>
+		 <option value="2" selected="selected">已送衣</option>
+		 <option value="3">清洗中</option>
+		 <option value="4">送回中</option>
+		 <option value="5">待取衣</option>
+		 <option value="6">待评价</option>
+		 <option value="7">已完成</option>
+		 {% elif querymodel.status==3 %}
+		 <option value="">请选择订单状态</option>
+		 <option value="0">待放件</option>
+		 <option value="1">已放件</option>
+		 <option value="2">已送衣</option>
+		 <option value="3" selected="selected">清洗中</option>
+		 <option value="4">送回中</option>
+		 <option value="5">待取衣</option>
+		 <option value="6">待评价</option>
+		 <option value="7">已完成</option>
+		 {% elif querymodel.status==4 %}
+		 <option value="">请选择订单状态</option>
+		 <option value="0">待放件</option>
+		 <option value="1">已放件</option>
+		 <option value="2">已送衣</option>
+		 <option value="3">清洗中</option>
+		 <option value="4" selected="selected">送回中</option>
+		 <option value="5">待取衣</option>
+		 <option value="6">待评价</option>
+		 <option value="7">已完成</option>
+		 {% elif querymodel.status==5 %}
+		 <option value="">请选择订单状态</option>
+		 <option value="0">待放件</option>
+		 <option value="1">已放件</option>
+		 <option value="2">已送衣</option>
+		 <option value="3">清洗中</option>
+		 <option value="4">送回中</option>
+		 <option value="5" selected="selected">待取衣</option>
+		 <option value="6">待评价</option>
+		 <option value="7">已完成</option>
+		 {% elif querymodel.status==6 %}
+		 <option value="">请选择订单状态</option>
+		 <option value="0">待放件</option>
+		 <option value="1">已放件</option>
+		 <option value="2">已送衣</option>
+		 <option value="3">清洗中</option>
+		 <option value="4">送回中</option>
+		 <option value="5">待取衣</option>
+		 <option value="6" selected="selected">待评价</option>
+		 <option value="7">已完成</option>
+		 {% elif querymodel.status==7 %}
+		 <option value="">请选择订单状态</option>
+		 <option value="0">待放件</option>
+		 <option value="1">已放件</option>
+		 <option value="2">已送衣</option>
+		 <option value="3">清洗中</option>
+		 <option value="4">送回中</option>
+		 <option value="5">待取衣</option>
+		 <option value="6">待评价</option>
+		 <option value="7" selected="selected">已完成</option>
+
+		 {% else %}
+		 <option value="">请选择订单状态</option>
+		 <option value="0">待放件</option>
+		 <option value="1">已放件</option>
+		 <option value="2">已送衣</option>
+		 <option value="3">清洗中</option>
+		 <option value="4">送回中</option>
+		 <option value="5">待取衣</option>
+		 <option value="6">待评价</option>
+		 <option value="7">已完成</option>
+		 {% endif %}
+   	</select>
+   	<select name="cabinetname" >
+   		<option value="">请选择智能柜</option>
+   		{% for item in cabinetdata %}
+   		 {% if querymodel.cabinetname==item.name %}
+   		 <option value="{{item.name}}" selected="selected">{{item.name}}</option>
+   		 {% else %}
+   		 <option value="{{item.name}}">{{item.name}}</option>
+   		 {% endif %}
+   		{% endfor%}
+   	</select>
+   	<div class="btn-box"  onclick="Searchparme()" >
+		<i class="glyphicon glyphicon-search" style="padding-right: 5px;"></i>搜索
+	</div>
+   </div>
+</div>
+{% endblock %}
+{% block search_bt %}
+{% endblock %}
+{% block table_th %}
+	<th class="tg-thead">编号</th>
+	<th class="tg-thead">订单编号</th>
+	<th class="tg-thead">会员ID</th>
+	<th class="tg-thead">用户昵称</th>
+	<th class="tg-thead">姓名</th>
+	<th class="tg-thead">手机号</th>
+	<th class="tg-thead">件数</th>
+	<th class="tg-thead">下单时间</th>
+	<th class="tg-thead">智能柜</th>
+	<th class="tg-thead">订单状态</th>
+	<th class="tg-thead">价格</th>
+	<th class="tg-thead">支付状态</th>
+	<th class="tg-thead">操作</th>
+{% endblock %}
+{% block table_body %}
+{% for item in pageInfo.list %}
+<tr class="gradeX">
+	<td><input type="checkbox" name="ids" value="{{item.id}}"/></td>
+	<td>{{item.id}}</td>
+	<td>{{item.orderNo}}</td>
+	<td>{{item.accountId}}</td>
+	<td>{{item.nickName}}</td>
+	<td>{{item.name}}</td>
+	<td>{{item.phone}}</td>
+	<td>{{item.orderNum}}</td>
+	<td>{{item.createTime}}</td>
+	<td>{{item.cabinetname}}</td>
+	<td>
+		{% if item.status == 0 %}
+		待放件	
+		{% endif %}
+		{% if item.status == 1 %}
+		已放件
+		{% endif %}
+		{% if item.status == 2 %}
+		已送衣
+		{% endif %}
+		{% if item.status == 3 %}
+		清洗中
+		{% endif %}
+		{% if item.status == 4 %}
+		送回中
+		{% endif %}
+		{% if item.status == 5 %}
+		待取衣
+		{% endif %}
+		{% if item.status == 6 %}
+		待评价
+		{% endif %}
+		{% if item.status == 7 %}
+		已完成
+		{% endif %}
+	</td>
+	<td>{{item.laundryPrice}}</td>
+	<td>
+		{% if item.payStatus == 0 %}
+			未支付
+		{% endif %}
+		{% if item.payStatus == 1 %}
+			已支付
+		{% endif %}
+	</td>
+	<td>
+		{% if Btn['operate/order/select'] %}
+		<a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="singlequery('{{item.id}}')">
+		<i class="fa fa-list" style="padding-right: 5px;"></i>详情</a>
+		{% endif %}
+	</td>
+</tr>
+{% endfor %}
+{% endblock %}
+{% block shawbox %}
+<script>
+	function singlequery(id){
+		layer.open({
+		  type: 2,
+		  title: '订单详情',
+		  shadeClose: true,
+		  shade: 0.4,
+		  area: ['60%', '60%'],
+		  content: '/operate/order/singlequery?id='+id //iframe的url
+		});
+	}
+	function Searchparme(){
+		$("#pageNum").val("1");
+		document.forms[0].submit();
+	}
+</script>
+{% endblock %}

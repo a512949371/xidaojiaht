@@ -1,0 +1,275 @@
+{% extends "../operate/base_list.html" %} {% block customTitle_src %}
+<div class="ibox-title">
+	<a class="clothes-abox active" href="/operate/coupon/selectList">优惠券</a>
+	<a class="clothes-abox ml10" href="/operate/recharge/selectList">充值赠送</a>
+</div>
+{% endblock %} {% block content_top %}
+<div class="flex-box-enter">
+	<div>
+		<div class="top-search-box">
+			<input type="text" placeholder="请输入优惠券ID、优惠券内容" name="parame" value="{{querymodel.parame}}" />
+			<select name="getType">
+				{% if querymodel.getType==1 %}
+				<option value="">请选择获取方式</option>
+				<option value="1" selected="selected">注册后获取</option>
+				<option value="2">充值后获取</option>
+				<option value="3">消费后获取</option>
+				{% elif querymodel.getType==2 %}
+				<option value="">请选择获取方式</option>
+				<option value="1">注册后获取</option>
+				<option value="2" selected="selected">充值后获取</option>
+				<option value="3">消费后获取</option>
+				{% elif querymodel.getType==3 %}
+				<option value="">请选择获取方式</option>
+				<option value="1">注册后获取</option>
+				<option value="2">充值后获取</option>
+				<option value="3" selected="selected">消费后获取</option>
+				{% else %}
+				<option value="">请选择获取方式</option>
+				<option value="1">注册后获取</option>
+				<option value="2">充值后获取</option>
+				<option value="3">消费后获取</option>
+				{% endif %}
+			</select>
+			<select name="status">
+				{% if querymodel.status==1 %}
+				<option value="">请选择优惠券状态</option>
+				<option value="1" selected="selected">有效</option>
+				<option value="2">失效</option>
+				{% elif querymodel.status==2 %}
+				<option value="">请选择优惠券状态</option>
+				<option value="1">有效</option>
+				<option value="2" selected="selected">失效</option>
+				{% else %}
+				<option value="">请选择优惠券状态</option>
+				<option value="1">有效</option>
+				<option value="2">失效</option>
+				{% endif %}
+			</select>
+			<div class="btn-box" onclick="Searchparme()">
+				<i class="glyphicon glyphicon-search" style="padding-right: 5px;"></i>搜索
+			</div>
+		</div>
+	</div>
+</div>
+<div class="flex-box-enter">
+	<div>&nbsp;</div>
+	<div class="top-box">
+		{% if Btn['operate/coupon/insert'] %}
+		<a class="btn-box" onclick="couponInsert()" style="margin: 0 30px 0 0;">
+			<i class="fa fa-plus" style="padding-right: 5px;"></i>新增</a>
+		{% endif %}
+	</div>
+</div>
+{% endblock %} {% block search_bt %} {% endblock %} {% block table_th %}
+<th class="tg-thead">编号</th>
+<th class="tg-thead">优惠券ID</th>
+<th class="tg-thead">优惠券内容</th>
+<th class="tg-thead">获取方式</th>
+<th class="tg-thead">优惠金额</th>
+<th class="tg-thead">优惠折扣</th>
+<th class="tg-thead">创建时间</th>
+<th class="tg-thead">创建人</th>
+<th class="tg-thead">当前状态</th>
+<th class="tg-thead">操作</th>
+{% endblock %} {% block table_body %} {% for item in pageInfo.list %}
+<tr class="gradeX">
+	<td>
+		<input type="checkbox" name="ids" value="{{item.id}}" />
+	</td>
+	<td>{{item.id}}</td>
+	<td>{{item.id}}</td>
+	<td>{{item.title}}</td>
+	<td>
+		{% if item.getType == 1 %} 注册后获取 {% endif %} {% if item.getType == 2 %} 充值后获取 {% endif %} {% if item.getType == 3 %} 消费后获取
+		{% endif %}
+	</td>
+	<td>{{item.discountPrice}}</td>
+	<td>{{item.discount*10}}折</td>
+	<td>{{item.createTime}}</td>
+	<td>{{item.userName}}</td>
+	<td>
+		{% if item.status == 1 %} 有效 {% endif %} {% if item.status == 2 %} 失效 {% endif %}
+	</td>
+	<td>
+		{% if Btn['operate/coupon/select'] %}
+		<a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="singlequery('{{item.id}}')">
+			<i class="fa fa-list" style="padding-right: 5px;"></i>详情</a>
+		{% endif %}
+	</td>
+</tr>
+{% endfor %} {% endblock %} {% block shawbox %}
+<div class="fixed-box" id="Fixedbox" style="width:600px;">
+	<div class="tit flex-box-enter">
+		<span>添加优惠券</span>
+		<span class="cursor-p" onclick="Closefixed()">X</span>
+	</div>
+	<div class="gray-bg">
+		<div class="wrapper wrapper-content animated fadeInRight">
+			<div class="form-box ibox-content">
+				<form class="form">
+					<div class="form-item">
+						<label class="desc">优惠券内容</label>
+						<input type="text" name="title" placeholder="请输入优惠券内容，不超过20个汉字"
+						data-rule="required;title;" data-msg-required="请输入优惠券内容">
+					</div>
+					<div class="form-item">
+						<label class="desc">获取方式</label>
+						<select name="gender" data-rule="required" data-msg-required="请选择优惠券获取方式">
+							<option value="" selected="selected">请选择获取方式</option>
+							<option value="1">注册后获取</option>
+							<option value="2">充值后获取</option>
+							<option value="3">消费后获取</option>
+						</select>
+					</div>
+					<div class="form-item">
+						<label class="desc">优惠金额</label>
+						<input class="coupon" type="text" name="discountPrice" placeholder="请输入优惠券金额"
+						data-rule="required(from, .coupon);discountPrice;range[0~]" data-msg-required="请输入优惠券金额或优惠券折扣">
+					</div>
+					<div class="form-item">
+						<label class="desc">优惠折扣</label>
+						<input class="coupon" type="text" name="discount" placeholder="请输入优惠券折扣"
+						data-rule="required(from, .coupon);discount; range[0~1]" data-msg-required="请输入优惠券折扣或优惠券金额">
+					</div>
+					<div class="form-item form-button">
+						<button class="btn btn-primary btn-xs" onclick="Insertdata()" type="submit">提交</button>
+						<button class="btn btn-default btn-xs" onclick="Closefixed()">取消</button>
+					</div>
+				</form>
+				<!-- <div class="list-box flex-box insert_input" style="padding-top: 10px">
+					<div class="desc">优惠券内容:</div>
+					<input type="text" name="title" placeholder="请输入优惠券内容，不超过20个汉字"
+					data-rule="required;title;"
+					data-msg-required="请输入优惠券内容"
+					/>
+				</div>
+				<div class="list-box flex-box">
+					<div class="desc">获取方式:</div>
+					<select class="select-w">
+					<option value="1" selected="selected">注册后获取</option>
+					<option value="2">充值后获取</option>
+					<option value="3">消费后获取</option>
+					</select>
+				</div>
+				<div class="list-box flex-box insert_input">
+					<div class="desc">优惠金额:</div>
+					<input type="number" name="discountPrice" placeholder="请输入优惠券金额"/>
+				</div>
+				<div class="list-box flex-box insert_input">
+					<div class="desc">优惠折扣:</div>
+					<input type="number" name="discount" placeholder="请输入优惠券折扣"/>
+				</div>
+				<div class="btn-box flex-box-center" style="padding-bottom: 10px;">
+					<div class="btn btn-primary btn-xs" onclick="Insertdata()">确认添加</div>
+					<div class="btn btn-success btn-xs" onclick="Closefixed()">取消</div>
+				</div> -->
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	function singlequery(id) {
+		layer.open({
+			type: 2,
+			title: '查看优惠券',
+			shadeClose: true,
+			shade: 0.5,
+			area: ['450px', '350px'],
+			content: '/operate/coupon/singlequery?id=' + id //iframe的url
+		});
+	}
+	function Searchparme() {
+		$("#pageNum").val("1");
+		document.forms[0].submit();
+	}
+	function couponInsert() {
+		$("#Fixedbox").show()
+	}
+	//关闭弹窗
+	function Closefixed() {
+		$("#Fixedbox").hide()
+	}
+
+	//添加一条优惠券
+	function Insertdata() {
+		let data = {
+			getType: $("#Fixedbox").find("select option:selected").val(),
+			title: $("#Fixedbox").find("input").eq(0).val(),
+			discountPrice: $("#Fixedbox").find("input").eq(1).val(),
+			discount: $("#Fixedbox").find("input").eq(2).val(),
+		}
+		console.log("msg", data);
+		if (data.getType != '') {
+			if(data.discountPrice!=''&&data.discount!=''){
+				layer.msg('优惠金额与优惠折扣只能选择一个');
+			}else{
+				$.ajax({
+					type: "post",
+					url: "couponinsert",
+					title: '',
+					async: true,
+					data: data,
+					success: function (data) {
+						if (data.status == 0) {
+							layer.msg('新增成功');
+							var index = parent.layer.getFrameIndex(window.name);
+							setTimeout(function () {
+								parent.layer.close(index);
+								window.parent.location.reload()
+							}, 1000);
+						}
+						else {
+							layer.msg(data.msg);
+						}
+					}
+				});
+			}
+		} else {
+			layer.msg('优惠券内容不能为空');
+		}
+		// if(data.getType!=''){
+		// 	if(data.discountPrice!=''&&data.discount!=''){
+		// 		layer.msg('优惠金额与优惠折扣只能选择一个');
+		// 	}else{
+		// 		if(data.discountPrice!=''||data.discount!=''){
+		// 				if(data.discount>0&&data.discount<1){
+		// 					$.ajax({
+		// 		    		type:"post",
+		// 					url:"couponinsert",
+		// 					title:'',
+		// 		    		async:true,
+		// 		    		data:data,
+		// 		    		success:function(data){
+		// 		    			if(data.status==0){
+		// 		    				layer.msg('新增成功');
+		// 		    				$("#Fixedbox").hide()
+		// 		    				setTimeout(function(){
+		// 		    					window.location.reload()
+		// 		    				},2000)
+		// 		    			}else{
+		// 		    				layer.msg(data.msg);
+		// 		    			}
+		// 		    		}
+		// 		    	});
+		// 				}else{
+		// 					layer.msg('优惠券折扣请输入0-1之间的数');
+		// 				}
+
+		// 			}else{
+		// 				if(data.discountPrice==''){
+		// 					layer.msg('优惠金额不能为空');
+		// 				}
+		// 				if(data.discount==''){
+		// 					layer.msg('优惠折扣不能为空');
+		// 				}
+		// 			}
+
+		// 		}
+		// 	}else{
+		// 			layer.msg('优惠券内容不能为空');
+		// 		}
+
+
+	}
+</script> {% endblock %}

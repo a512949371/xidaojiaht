@@ -1,0 +1,181 @@
+{% extends "../operate/base_list.html" %} 
+{% block customTitle_src %}
+ <div class="ibox-title">
+ 	<a class="clothes-abox ml10" href="/operate/coupon/selectList">优惠券</a>
+ 	<a class="clothes-abox active" href="/operate/recharge/selectList">充值赠送</a>
+ </div>
+{% endblock %}
+{% block content_top %}
+<div class="flex-box-enter">
+	<div>&nbsp;</div>
+	{% if Btn['operate/recharge/insert'] %}
+   	<div class="top-search-box" >
+		<a class="btn-box" onclick="rechargeInsert()" style="margin:0;">
+		<i class="fa fa-plus" style="padding-right: 5px;"></i>新增</a>
+	</div>
+	{% endif %}
+</div>
+{% endblock %}
+{% block search_bt %}
+{% endblock %}
+{% block table_th %}
+	<th>编号</th>
+	<th>充值金额</th>
+	<th>赠送金额</th>
+	<th>持续时间</th>
+	<th>创建时间</th>
+	<th>创建人</th>
+	<th>操作</th>
+{% endblock %}
+{% block table_body %}
+{% for item in pageInfo.list %}
+<tr class="gradeX">
+	<td><input type="checkbox" name="ids" value="{{item.id}}"/></td>
+	<td>{{item.id}}</td>
+	<td>{{item.chargeAmount}}</td>
+	<td>{{item.giftAmount}}</td>
+	<td>{{item.endTime}}</td>
+	<td>{{item.createTime}}</td>
+	<td>{{item.userId}}</td>
+	<td>
+		{% if Btn['operate/recharge/select'] %}
+		<a class="btn btn-primary btn-xs" href="javascript:void(0)" class="classify-box" onclick="singlequery('{{item.id}}')">
+				<i class="fa fa-pencil" style="padding-right: 5px;"></i>修改</a>
+		{% endif %}
+		{% if Btn['operate/recharge/delete'] %}
+		<a class="btn btn-danger btn-xs" href="javascript:void(0)" class="classify-box" onclick="rechargedelete('{{item.id}}')">
+				<i class="fa fa-trash" style="padding-right: 5px;"></i>删除</a>
+		{% endif%}
+	</td>
+</tr>
+{% endfor %}
+</div>
+</div>
+{% endblock %}
+{% block shawbox %}
+<div class="fixed-box" id="Fixedbox">
+	<div class="tit flex-box-enter">
+		<span>添加充值赠送</span>
+		<span class="cursor-p" onclick="Closefixed()">X</span>
+	</div>
+	<div class="gray-bg">
+		<div class="wrapper wrapper-content animated fadeInRight">
+			<div class="form-box ibox-content">
+				<form class="form" data-validator-option="{timely:2}">
+					<div class="form-item">
+						<label class="desc">充值金额</label>
+						<input type="text" name="chargeAmount" placeholder="请输入赠送金额"
+						data-rule="required; chargeAmount;range[0~]" data-msg-required="请输入赠送金额">
+					</div>
+					<div class="form-item">
+						<label class="desc">赠送金额</label>
+						<input type="text" name="giftAmount" placeholder="请输入赠送金额"
+						data-rule="required; giftAmount;range[0~]" data-msg-required="请输入赠送金额">
+					</div>
+					<div class="form-item form-button">
+						<button class="btn btn-primary btn-xs" onclick="Insertdata()" type="submit">提交</button>
+						<button class="btn btn-default btn-xs" onclick="Closefixed()">取消</button>
+					</div>
+				</form>
+			</div>
+			<!-- <div class="content-box ibox-content">
+				<div class="list-box flex-box insert_input" style="padding-top: 10px">
+					<div class="desc">充值金额:</div>
+					<input type="number"/>
+				</div>
+				<div class="list-box flex-box insert_input">
+					<div class="desc">赠送金额:</div>
+					<input type="number"/>
+				</div>
+				<div class="btn-box flex-box-center" style="padding-bottom: 10px;">
+					<div class="btn btn-primary btn-xs" onclick="Insertdata()">确认添加</div>
+					<div class="btn btn-success btn-xs" onclick="Closefixed()">取消</div>
+				</div>
+			</div> -->
+		</div>
+	</div>
+</div>
+<script>
+	function singlequery(id){
+		layer.open({
+			type: 2,
+			title: '充值赠送',
+			shadeClose: true,
+			shade: 0.5,
+			area: ['500px', '250px'],
+			content: '/operate/recharge/singlequery?id='+id //iframe的url
+		});
+	}
+    function rechargeInsert(){
+    		$("#Fixedbox").show()
+	}
+    //关闭弹窗
+    function Closefixed(){
+    	$("#Fixedbox").hide()
+    }
+	//添加充值赠送
+	function Insertdata(){
+		let data ={
+    		chargeAmount:$("#Fixedbox").find("input").eq(0).val(),
+    		giftAmount:$("#Fixedbox").find("input").eq(1).val(),
+		}
+		console.log("msg",data);
+		if(data.chargeAmount>0&&data.giftAmount>0){
+			$.ajax({
+	    		type:"post",
+	    		url:"rechargeinsert",
+	    		async:true,
+	    		data:data,
+	    		success:function(data){
+	    			if(data.status==0){
+	    				layer.msg('新增成功');
+	    				$("#Fixedbox").hide()
+	    				setTimeout(function(){
+	    					window.location.reload()
+	    				},2000)
+	    			}else{
+	    				layer.msg(data.msg);
+	    			}
+	    		}
+	    	});
+		}else{
+			if(data.chargeAmount==''||data.chargeAmount<=0){
+				layer.msg('充值金额不能为空或者小于0');
+			}else if(data.giftAmount==''||data.giftAmount<=0){
+				layer.msg('赠送金额不能为空或者小于0');
+			}
+		}
+    	
+	}
+
+	//充值赠送删除
+	function rechargedelete(id){
+    	let data={
+			id:id,
+			isDelete:true,
+    	}
+    	layer.confirm('您确定要删除该优惠券？', {
+		  btn: ['是的','取消'] //按钮
+		}, function(){
+    	$.ajax({
+    		type:"post",
+    		url:"deleterecharge",
+    		async:true,
+    		data:data,
+    		success:function(data){
+    			if(data.status==0){
+    				layer.msg('删除成功');
+    				setTimeout(function(){
+    					window.location.reload()
+    				},2000)
+    			}else{
+    				layer.msg(data.msg);
+    			}
+    		}
+    	});
+    	}, function(){
+		  console.log("取消")
+		});
+    }
+</script>
+{% endblock %}

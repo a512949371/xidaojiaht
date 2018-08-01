@@ -1,0 +1,58 @@
+{% extends "./base_toAdd.html" %}
+{% block form_top %}
+{% endblock %}
+{% block form %}
+ <div class="onedetail-box" id="Onedetailbox">
+ 	<div class="content-box">
+ 		<div class="list-box flex-box">
+ 			<div class="desc">衣物瑕疵:</div>
+ 			<input class="input-w" type="text" value="{{clothesonedata.name}}" />
+ 		</div>
+ 	</div>
+ </div>
+{% endblock %}
+{% block form_submit %}
+<div class="btn-box-comm flex-box-center">
+	<div class="btn btn-primary btn-xs" data-id="{{clothesonedata.id}}" onclick="Trueupdata($(this))">提交</div>
+	<div class="btn btn-default btn-xs" onclick="Closefixed()">取消</div>
+</div>
+<script>
+	//关闭弹窗
+    function Closefixed(){
+    	var index = parent.layer.getFrameIndex(window.name);
+		parent.layer.close(index);
+    }
+    //确认修改
+    function Trueupdata(obj){
+    	let data ={
+    		id:obj.attr("data-id"),
+    		name:$("#Onedetailbox").find("input").eq(0).val(),
+    		type:3,
+    	}
+    	console.log(data)
+    	if(data.name!=''){
+    		$.ajax({
+	    		type:"post",
+	    		url:"updataclothes",
+	    		async:true,
+	    		data:data,
+	    		success:function(data){
+	    			if(data.status==0){
+	    				layer.msg('修改成功');
+						var index = parent.layer.getFrameIndex(window.name);
+						setTimeout(function(){
+							parent.layer.close(index);
+							window.parent.location.reload()
+							}, 1000);
+	    			}else{
+	    				layer.msg(data.msg);
+	    			}
+	    		}
+	    	});
+    	}else{
+    		layer.msg('瑕疵名称不能为空');
+    	}
+    	
+    }
+</script>
+{% endblock %}

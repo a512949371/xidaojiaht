@@ -1,0 +1,119 @@
+{% extends "./base_list.html" %}
+{% block customTitle_src %}
+<div class="ibox-title">
+	<h5>物流管理</h5>
+</div>
+{% endblock %} 
+{% block content_top %}
+<div class="flex-box-enter">
+		<div>&nbsp;</div>
+	<div>
+		{% if Btn['logistics/logper/insert'] %}
+		<div class="top-search-box">
+		<div class="qcode-box" onclick="Adddetail($(this))"><i class="fa fa-plus" style="padding-right: 5px;"></i>新增</div>
+		</div>
+		{% endif %}
+	</div>
+</div>
+<script>
+	function Adddetail(){
+		layer.open({
+		  type: 2,
+		  title: '新增物流人员',
+		  shadeClose: true,
+		  shade: 0.8,
+		  area: ['600px', '350px'],
+		  content: 'addlogper' //iframe的url
+		});
+	}
+</script>
+{% endblock %}
+{% block search_bt %}
+{% endblock %}
+{% block table_th %}
+	<th>编号</th>
+	<th>姓名</th>
+	<th>员工账号</th>
+	<th>手机号</th>
+	<th>收衣单数</th>
+	<th>送衣单数</th>
+	<th>紧急送单</th>
+	<th>添加时间</th>
+	<th>操作</th>
+{% endblock %}
+{% block table_body %}
+{% for item in pageInfo.list %}
+<tr class="gradeX">
+	<td><input type="checkbox" name="ids" value="{{item.id}}"/></td>
+	<td>{{item.id}}</td>
+	<td>{{item.name}}</td>
+	<td>{{item.userName}}</td>
+	<td>{{item.phone}}</td>
+	<td>{{item.totalReceive}}</td>
+	<td>{{item.totalSend}}</td>
+	<td>{{item.totalEmergency}}</td>
+	<td>{{item.createTime}}</td>
+	<td>
+		{% if Btn['logistics/logper/select'] %}
+		<button type="button" class="btn btn-primary btn-xs" data-id = "{{item.id}}" onclick="Lookdetail($(this))">
+				<i class="fa fa-list" style="padding-right: 5px;"></i>查看/修改</button>
+		{% endif %}
+		{% if Btn['logistics/logper/password'] %}
+		<button type="button" class="btn btn-warning btn-xs" data-id = "{{item.id}}" onclick="Selectpwd($(this))">
+				<i class="fa fa-pencil" style="padding-right: 5px;"></i>修改密码</button>
+		{% endif %}
+		{% if Btn['logistics/logper/delete'] %}
+		<button type="button" class="btn btn-danger btn-xs" data-id = "{{item.id}}" onclick="Deletedetail($(this))">
+				<i class="fa fa-trash" style="padding-right: 5px;"></i>删除</button>
+		{% endif %}
+	</td>
+</tr>
+{% endfor %}
+<script>
+	function Lookdetail(obj){
+		layer.open({
+			  type: 2,
+			  title: '查看物流人员详情',
+			  shadeClose: true,
+			  shade: 0.8,
+			  area: ['600px', '280px'],
+			  content: 'selectone?id='+obj.attr("data-id") //iframe的url
+			});
+	}
+	//修改密码
+	function Selectpwd(obj){
+		layer.open({
+			  type: 2,
+			  title: '修改密码',
+			  shadeClose: true,
+			  shade: 0.8,
+			  area: ['400px', '200px'],
+			  content: 'selectpwd?id='+obj.attr("data-id") //iframe的url
+			});
+	}
+	function Deletedetail(obj){
+		layer.confirm('您确定要删除该物流人员？', {
+		  btn: ['是的','取消'] //按钮
+		}, function(){
+		  $.ajax({
+		  	type:"get",
+		  	url:"removelogistics?id="+obj.attr("data-id"),
+		  	async:true,
+		  	success:function(data){
+		  		if(data.status==0){
+		  			layer.msg('删除成功');
+		  			setTimeout(function(){
+		  				window.location.reload()
+		  			},1000)
+		  		}else{
+		  			layer.msg(data.msg);
+		  		}
+		  		
+		  	}
+		  });
+		}, function(){
+		  console.log("取消")
+		});
+	}
+</script>
+{% endblock %}

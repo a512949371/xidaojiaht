@@ -1,0 +1,124 @@
+{% extends "./base_toAdd.html" %}
+    {% block form_top %}
+    <div class="ibox-title">
+        <h5 id="pagedes">版本控制</h5>
+    </div>
+    {% endblock %}
+    {% block content_top %}
+	 <div class="flex-box-end">
+		<div class="qcode-box" onclick="Lookdetail($(this),'1')">终端更新通知</div>
+		<div class="qcode-box ml10" onclick="Lookdetail($(this),'2')">终端更新通知(广播)</div>
+	</div>   
+	<script>
+	function Lookdetail(obj,num){
+		if(num==1){
+			layer.open({
+			  type:1,
+			  title:"确认广播?",
+			  content:'',
+			  btn: ['是的','取消'],//按钮
+			  area:['600px',''],
+			  yes:function(index,layero){
+			  $.ajax({
+				type:"POST",
+				url:"/operate/version/versionsend",
+				async:true,
+				data:'',
+				success:function(data){
+					console.log("Trueclothesclass",data)
+					if(data.status==0){
+						layer.msg('广播成功');
+						setTimeout(function(){
+							layer.close(index)
+						},1000)
+						
+					}else if(data.status==401){
+						window.location.href='/auth/login'
+					}
+				}
+			  });
+			},
+			btn2:function(){
+			  console.log("取消");
+			}
+			});
+		}
+	    if(num==2){
+	    	$.ajax({
+	    		type:"get",
+	    		url:"/operate/version/cabinetselect",
+	    		async:true,
+	    		success:function(data){
+	    			if(data.status==0){
+	    				var listdata='<option value="">请选择柜子</option>';
+	    				console.log("data",data.body)
+	    				for(var i = 0;i<data.body.length;i++){
+	    					listdata+='<option value="'+data.body[i].id+'">'+data.body[i].name+'</option>'
+	    				}
+	    				$("#Layerlaert select").html(listdata)
+	    			}else if(data.status==401){
+						window.location.href='/auth/login'
+					}
+	    		}
+	    	});
+			layer.open({
+			  type:1,
+			  title:"确认广播?",
+			  content:$("#Layerlaert"),
+			  btn: ['是的','取消'],//按钮
+			  area:['600px',''],
+			  yes:function(index,layero){
+			  var smarkid = $("#Layerlaert select option:selected").val();
+			  if(smarkid!=''){
+			  	$.ajax({
+				type:"POST",
+				url:"/operate/version/versionsendone?id="+smarkid,
+				async:true,
+				data:'',
+				success:function(data){
+					console.log("Trueclothesclass",data)
+					if(data.status==0){
+						layer.msg('广播成功');
+						setTimeout(function(){
+							layer.close(index)
+						},1000)
+						
+					}
+				}
+					});
+			  }else{
+			  	layer.msg('请选择柜子');
+			  }
+			  
+			},
+			btn2:function(){
+			  console.log("取消");
+			}
+			});
+		}
+	}
+</script>
+    {% endblock %}
+    {% block form %}
+    {% endblock %}
+    {% block form_submit %}
+    {% endblock %}
+     </form>
+    {% block form_scr %}
+    {% endblock %}
+    {% block form_custom %}
+    {% endblock %}
+    </div>
+</div>
+</body>
+{% block out_body %}
+<div class="layer-alert" id="Layerlaert" style="display: none;">
+		<div class="box flex-box mt10 ml10">
+			<div class="desc">选择柜子：</div>
+			<div class="no">
+			<select>
+				
+			</select></div>
+		</div>
+	</div>
+{% endblock %}    

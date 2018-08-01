@@ -1,0 +1,101 @@
+{% extends "../operate/base_list.html" %} 
+{% block customTitle_src %}
+<div class="ibox-title">
+	<h5>用户管理</h5>
+</div>
+{% endblock %} 
+{% block content_top %}
+<div class="flex-box-enter">
+	<div>
+		<div class="top-search-box">
+			<input type="text" placeholder="请输入用户ID、手机号" name="parame" value="{{querymodel.parame}}" />
+			<style>
+			</style>
+			<div class="input-group">
+				<select class="chosen-select" tabindex="2" name="status">
+					{% if querymodel.status==0 %}
+					<option value="">请选择状态</option>
+					<option value="0" selected="selected">正常</option>
+					<option value="1">冻结</option>
+					<option value="2">解冻</option>
+					{% elif querymodel.status==1 %}
+					<option value="">请选择状态</option>
+					<option value="0">正常</option>
+					<option value="1" selected="selected">冻结</option>
+					<option value="2">解冻</option>
+					{% elif querymodel.status==2 %}
+					<option value="">请选择状态</option>
+					<option value="0">正常</option>
+					<option value="1">冻结</option>
+					<option value="2" selected="selected">解冻</option>
+					{% else %}
+					<option value="">请选择状态</option>
+					<option value="0">正常</option>
+					<option value="1">冻结</option>
+					<option value="2">解冻</option>
+					{% endif %}
+				</select>
+			</div>
+			<div class="btn-box" onclick="Searchparme()">
+				<i class="glyphicon glyphicon-search" style="padding-right: 5px;"></i>搜索
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %} {% block search_bt %} {% endblock %} {% block table_th %}
+<th class="tg-thead">用户ID</th>
+<th class="tg-thead">用户昵称</th>
+<th class="tg-thead">用户姓名</th>
+<th class="tg-thead">手机号</th>
+<th class="tg-thead">注册时间</th>
+<th class="tg-thead">充值总额</th>
+<th class="tg-thead">当前余额</th>
+<th class="tg-thead">赠送总额</th>
+<th class="tg-thead">赠送余额 </th>
+<th class="tg-thead">消费总额</th>
+<th class="tg-thead">优惠券</th>
+<th class="tg-thead">状态</th>
+<th class="tg-thead">操作</th>
+{% endblock %} {% block table_body %} {% for item in pageInfo.list %}
+<tr class="gradeX">
+	<td>
+		<input type="checkbox" name="ids" value="{{item.id}}" />
+	</td>
+	<td>{{item.id}}</td>
+	<td>{{item.nickName}}</td>
+	<td>{{item.name}}</td>
+	<td>{{item.phone}}</td>
+	<td>{{item.createTime}}</td>
+	<td>{{item.chargeTotal}}</td>
+	<td>{{item.balance}}</td>
+	<td>{{item.giftTotal}}</td>
+	<td>{{item.giftBalance}}</td>
+	<td>{{item.consumption}}</td>
+	<td>{{item.couponNum}}</td>
+	<td>
+		{% if item.status == 0 %} 正常 {% endif %} {% if item.status == 1 %} 冻结 {% endif %} {% if item.status == 2 %} 解冻 {% endif %}
+	</td>
+	<td>
+		{% if Btn['operate/account/select'] %}
+		<a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="singlequery('{{item.id}}')">
+			<i class="fa fa-list" style="padding-right: 5px;"></i>详情</a>
+		{% endif %}
+	</td>
+</tr>
+{% endfor %} {% endblock %} {% block shawbox %}
+<script>
+	function singlequery(id) {
+		layer.open({
+			type: 2,
+			title: '用户详情',
+			shadeClose: true,
+			shade: 0.5,
+			area: ['60%', '60%'],
+			content: '/operate/account/singlequery?id=' + id //iframe的url
+		});
+	}
+	function Searchparme() {
+		$("#pageNum").val("1");
+		document.forms[0].submit();
+	}
+</script> {% endblock %}

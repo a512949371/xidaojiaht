@@ -1,0 +1,65 @@
+{% extends "./base_toAdd.html" %}
+{% block customTitle_src %}
+<div class="ibox-title">
+	<h5>工厂管理</h5>
+</div>
+{% endblock %} 
+{% block form_top %}
+{% endblock %}
+{% block form %}
+<div class="addsmark-box" id="Addsmark">
+	<div class="addsmark flex-box">
+		<div class="left">新密码:</div>
+		<input class="input-w" type="password" value=""/>
+	</div>
+</div>
+{% endblock %}
+{% block form_submit %}
+<div class="addsmark-btn-box flex-box-center">
+	<div class="btn btn-primary btn-xs" data-id="{{id}}" onclick="Trueupdata($(this))">提交</div>
+	<div class="btn btn-default btn-xs" onclick="Closefixed()">取消</div>
+</div>
+<script>
+	//打开可选管辖柜子列表
+	var groupdata={
+		id:'',
+		passWord:'',
+	};
+	//关闭弹窗
+    function Closefixed(){
+    	var index = parent.layer.getFrameIndex(window.name);
+		parent.layer.close(index);
+    }
+    //确认修改
+    function Trueupdata(obj){
+    		groupdata.passWord=$("#Addsmark").find("input").eq(0).val();
+    		groupdata.id=obj.attr("data-id");
+    	console.log(groupdata)
+    	if(groupdata.passWord!=''){
+			$.ajax({
+	    		type:"post",
+	    		url:"updatefactoryperpwd",
+	    		async:true,
+	    		data:groupdata,
+	    		success:function(data){
+	    			if(data.status==0){
+	    				layer.msg('编辑成功');
+						var index = parent.layer.getFrameIndex(window.name);
+						setTimeout(function(){
+							parent.layer.close(index);
+							window.parent.location.reload()
+							}, 1000);
+	    			}else{
+	    				layer.msg(data.msg);
+	    			}
+	    		}
+	    	});    		
+    	}else{
+    		layer.msg('新密码不能为空');
+    	}
+    	
+    }
+</script>
+{% endblock %}
+{% block form_scr %}
+{% endblock %}

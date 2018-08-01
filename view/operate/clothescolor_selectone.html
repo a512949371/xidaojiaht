@@ -1,0 +1,77 @@
+{% extends "./base_toAdd.html" %}
+{% block form_top %}
+{% endblock %}
+{% block form %}
+ <div class="onedetail-box" id="Onedetailbox">
+ 	<div class="content-box">
+ 		<div class="list-box flex-box">
+ 			<div class="desc">颜色名称:</div>
+ 			<input class="input-w" type="text" value="{{coloronedata.colorName}}" />
+ 		</div>
+ 		<div class="list-box flex-box">
+ 			<div class="desc">颜色十六进制:</div>
+ 			<input class="input-w" type="text" value="{{coloronedata.colorCode}}" />
+ 		</div>
+ 	</div>
+ </div>
+{% endblock %}
+{% block form_submit %}
+<div class="btn-box-comm flex-box-center">
+	<div class="btn btn-primary btn-xs" data-id="{{coloronedata.id}}" onclick="Trueupdata($(this))">确认提交</div>
+	<div class="btn btn-default btn-xs" onclick="Closefixed()">取消</div>
+</div>
+<script>
+	//颜色正则
+	 function Color(data){
+	 	let reg = new RegExp("^#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$");
+	 	console.log(data)
+	 	console.log("3",reg.test(data))
+	 	if(reg.test(data)){
+	 		return true;
+	 	}else{
+	 		return false;
+	 	}
+	 }
+	//关闭弹窗
+    function Closefixed(){
+    	var index = parent.layer.getFrameIndex(window.name);
+		parent.layer.close(index);
+    }
+    //确认修改
+    function Trueupdata(obj){
+    	let data ={
+    		id:obj.attr("data-id"),
+    		colorName:$("#Onedetailbox").find("input").eq(0).val(),
+    		colorCode:$("#Onedetailbox").find("input").eq(1).val(),
+    	}
+    	console.log(data)
+    	if(Color(data.colorCode)&&data.colorName!=''){
+    	$.ajax({
+    		type:"post",
+    		url:"upclothescolorone",
+    		async:true,
+    		data:data,
+    		success:function(data){
+    			if(data.status==0){
+    				layer.msg('修改成功');
+					var index = parent.layer.getFrameIndex(window.name);
+					setTimeout(function(){
+						parent.layer.close(index);
+						window.parent.location.reload()
+						}, 1000);
+    			}else{
+    				layer.msg(data.msg);
+    			}
+    		}
+    	});
+    	}
+    	else{
+    		if(data.colorName==''){
+    		 layer.msg('颜色名称不能为空');
+    		}else{
+    		 layer.msg('请输入正确的十六进制颜色');	
+    		}
+    	}
+    }
+</script>
+{% endblock %}

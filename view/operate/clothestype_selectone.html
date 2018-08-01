@@ -1,0 +1,145 @@
+{% extends "./base_toAdd.html" %}
+{% block form_top %}
+{% endblock %}
+{% block form %}
+ <div class="onedetail-box" id="Onedetailbox">
+ 	<div class="content-box">
+ 		<div class="list-box flex-box">
+ 			<div class="desc">衣物大类:</div>
+ 			<input class="input-w" type="text" value="{{clothesonedata.name}}" />
+ 		</div>
+ 		<div class="list-box flex-box">
+ 			<div class="desc">所属分类:</div>
+ 			<select class="select-w">
+ 				{% for item in allclothesdata %}
+ 				 {% if item.id == clothesonedata.pid %}
+ 				<option value="{{item.id}}" selected="selected">{{item.name}}</option>
+ 				 {% else %}
+ 				 <option value="{{item.id}}">{{item.name}}</option>
+ 				 {% endif %}
+ 				{% endfor %}
+ 			</select>
+ 		</div>
+ 		<div class="list-box flex-box">
+ 			<div class="desc">图片:</div>
+ 			<div>
+ 				<input class="input-w" type="hidden" value=""  name="img" id="img" >
+		        <input class="input-file" type="file" class="form-control" id="productImg" name="imgFile">
+ 			</div>
+ 		</div>
+ 		<div class="list-box flex-box">
+ 			<div class="desc"></div>
+ 			<div style=" padding-bottom: 10px;">
+		            <img src="{{clothesonedata.typeImg}}" width="80" height="80" id="picImg">
+		        <input class="file_input" type="button" value="上传图片" onclick="checkImg('picImg','productImg','img')"/>
+		        <span style="color: red;">*上传图片限制小于 200kb</span>
+		    </div>
+ 		</div>
+ 	</div>
+ </div>
+ <script src="/static/kindeditor/kindeditor-min.js"></script>
+<script src="/static/js/ajaxfileupload.js"></script>
+<script>
+    var uploadUrl = "uploadimg";
+    function checkImg(img,imgFile,imgUrl) {
+        var ths=$('#'+imgFile);
+        if (ths.val().length <= 0) {
+            alert("请上传图片");
+            return false;
+        } else if(!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(ths.val())){
+            alert("图片类型必须是.gif,jpeg,jpg,png中的一种");
+            ths.val("");
+            return false;
+        }
+        //效验成功调用异步上传函数
+        ajaxFileUpload(img,imgFile,imgUrl);
+        return true;
+    }
+
+    function ajaxFileUpload(img,imgFile,imgUrl) {
+        $.ajaxFileUpload
+        (
+            {
+                url: uploadUrl, //用于文件上传的服务器端请求地址
+                type: 'post',
+                secureuri: false, //是否需要安全协议，一般设置为false
+                fileElementId: imgFile, //文件上传域的ID
+                dataType: 'text', //返回值类型 一般设置为json
+                success: function (data)  //服务器成功响应处理函数
+                {
+                	data = $.parseJSON(data.replace(/<.*?>/ig,"")); 
+                	console.log(data);
+                	if(data.status==200){
+	                        console.log(data);
+	                        $("#"+imgUrl).val("/"+data.realUrl);
+	                        $('#'+img).attr("src", data.data);
+	                        $('#'+img).show();
+	                   
+                	}else{
+                		layer.msg(data.data);
+                	}
+                    
+                },
+                error: function (data)//服务器响应失败处理函数
+                {
+                    alert(data);
+                }
+            }
+        )
+        return false;
+    }
+
+</script>
+{% endblock %}
+{% block form_submit %}
+<div class="btn-box-comm flex-box-center">
+	<div class="btn btn-primary btn-xs" data-id="{{clothesonedata.id}}" onclick="Trueupdata($(this))">提交</div>
+	<div class="btn btn-default btn-xs" onclick="Closefixed()">取消</div>
+</div>
+<script>
+	//关闭弹窗
+    function Closefixed(){
+    	$("#img").val("")
+    	var index = parent.layer.getFrameIndex(window.name);
+		parent.layer.close(index);
+    }
+    //确认修改
+    function Trueupdata(obj){
+    	let data ={
+    		id:obj.attr("data-id"),
+    		pid:$("#Onedetailbox").find("select option:selected").val(),
+    		name:$("#Onedetailbox").find("input").eq(0).val(),
+    		type:1,
+    		typeImg:$("#img").val(),
+    	}
+    	console.log(data)
+    	if(data.name!=''&&data.pid!=''){
+    	$.ajax({
+    		type:"post",
+    		url:"updataclothes",
+    		async:true,
+    		data:data,
+    		success:function(data){
+    			if(data.status==0){
+    				layer.msg('修改成功');
+					var index = parent.layer.getFrameIndex(window.name);
+					setTimeout(function(){
+						parent.layer.close(index);
+						window.parent.location.reload()
+						}, 1000);
+    			}else{
+    				layer.msg(data.msg);
+    			}
+    		}
+    	});
+    	}else{
+    		if(data.name==''){
+    			layer.msg('衣物大类不能为空');
+    		}else{
+    			layer.msg('所属分类不能为空');
+    		}
+    		
+    	}
+    }
+</script>
+{% endblock %}

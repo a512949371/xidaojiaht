@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="/static//hplus/css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+    <link href="/static//hplus/css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <!-- Data Tables -->
+    <link href="/static//hplus/css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="/static//hplus/css/animate.min.css" rel="stylesheet">
+    <link href="/static//hplus/css/style.min862f.css?v=4.1.0" rel="stylesheet">
+    <link href="/static//hplus/css/clothes.css" rel="stylesheet">
+    <link href="/static//hplus/css/check.css" rel="stylesheet">
+
+    <script src="/static//hplus/js/jquery.min.js?v=2.1.4"></script>
+    <script src="/static//hplus/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="/static//hplus/js/plugins/jeditable/jquery.jeditable.js"></script>
+    <script src="/static//hplus/js/plugins/dataTables/jquery.dataTables.js"></script>
+    <script src="/static//hplus/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+    <script src="/static//hplus/js/content.min.js?v=1.0.0"></script>
+    <script src="/static/layer/layer.js"></script>
+    <script src="/static/nice-validator/jquery.validator.js?local=zh-CN"></script>
+    <script src="/static/laydate/laydate.js"></script>
+    <script src="/static/custom/tableUtils.js"></script>
+    <style type="text/css">
+        ul li {
+            margin-top: 10px;
+        }
+
+        div {
+            clear: both;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight" id="accountone" data-id="{{detaildata.id}}">
+        <div class="content-box">
+            <div class="tit-box">
+                <h3>订单基础信息</h3>
+            </div>
+            <div class="row layer_conul">
+                <ul class="layer_ulleft">
+                    <li class="flex-box1">
+                        <div>订单编号：</div>
+                        <span>{{selectone.orderNo}}</span>
+                    </li>
+                    <li class="flex-box1">
+                        <div>会员ID：</div>
+                        <span>{{selectone.accountId}}</span>
+                    </li>
+                    <li class="flex-box1">
+                        <div>用户姓名：</div>
+                        <span>{{selectone.userName}}</span>
+                    </li>
+                </ul>
+                <ul class="layer_ul">
+                    <li class="flex-box1">
+                        <div>放件时间：</div>
+                        <span>{{selectone.createTime}}</span>
+                    </li>
+                    <li class="flex-box1">
+                        <div>用户昵称：</div>
+                        <span>{{selectone.nickName}}</span>
+                    </li>
+                    <li class="flex-box1">
+                        <div>手机号：</div>
+                        <span>{{selectone.phone}}</span>
+                    </li>
+                </ul>
+                <div class="pad10 flex-box1" style="padding-top: 5px">
+                    <div>详细地址：</div>
+                    <span>{{selectone.userAddress}}</span>
+                </div>
+            </div>
+            <hr>
+            <div class="tit-box flex-box1">
+                <h3>衣物信息</h3>
+                <span>
+                    <div id="clothes"><a href="javascript:void(0)">查看</a></div>
+                </span>
+            </div>
+            <div class="row layer_conul">
+                <div id="clothesdetails" style="display: none;">
+                    {% for item in  selectone.clothesList %}
+                    <ul class="layer_ulleft">
+                        <li class="flex-box1">
+                            <div>衣物：</div>
+                            <span>
+                                {% if item.clothesInfoName == null %}
+                                {{item.clothesName}}
+                                {% endif %}
+                                {% if item.clothesInfoName != null %}
+                                {{item.clothesName}}：{{item.clothesInfoName}}
+                                {% endif %}
+                            </span>
+                        </li>
+                        <li class="flex-box1">
+                            <div>价格：</div>
+                            <span>{{item.price}}</span>
+                        </li>
+                        <li class="flex-box1">
+                            <div>品牌：</div>
+                            <span>{{item.brand}}</span>
+                        </li>
+                    </ul>
+                    <ul class="layer_ul">
+                        <li class="flex-box1">
+                            <div>颜色：</div>
+                            <span>{{item.colorName}}</span>
+                        </li>
+                        <li class="flex-box1">
+                            <div>瑕疵：</div>
+                            <span>{{item.defectDetail}}</span>
+                        </li>
+                        <li class="flex-box1">
+                            <div>衣物条形码：</div>
+                            <span>{{item.clothesCode}}</span>
+                        </li>
+                    </ul>
+                    {% endfor %}
+                </div>
+            </div>
+            <hr>
+            <div class="tit-box">
+                <h3>智能柜信息</h3>
+            </div>
+            <div class="row layer_conul">
+                <ul class="layer_ulleft">
+                    <li class="flex-box1">
+                        <div>放件智能柜：</div>
+                        <span>{{selectone.cabinetName}}</span>
+                    </li>
+                    <li class="flex-box1">
+                        <div>箱格数：</div>
+                        <span><a href="javascript:void(0)" >{{selectone.userUseBox}}</a>
+                           <!-- <a href="javascript:void(0)" onclick="smark('{{selectone.id}}')">{{selectone.courierUseBox}}</a>-->
+                        </span>
+                    </li>
+                </ul>
+                <ul class="layer_ul">
+                    <li class="flex-box1">
+                        <div>取件智能柜：</div>
+                        <span>{{selectone.cabinetCourierName}}</span>
+                    </li>
+                </ul>
+                <div class="pad10 flex-box1">
+                    <div>详细地址：</div>
+                    <span>{{selectone.cabinetAddress}}</span>
+                </div>
+            </div>
+            <hr>
+            <div class="tit-box">
+                <h3>价格信息</h3>
+            </div>
+            <div class="row layer_conul">
+                <ul class="layer_ulleft">
+                    <li class="flex-box1">
+                        <div>洗护总价：</div>
+                        <span>{{selectone.laundryPrice}}</span>
+                    </li>
+                    <li class="flex-box1">
+                        <div>优惠券：</div>
+                        <span>{{selectone.couponPrice}}</span>
+                    </li>
+                    <li class="flex-box1">
+                        <div>用户实付：</div>
+                        <span>{{selectone.realPayPrice}}</span>
+                    </li>
+                </ul>
+                <ul class="layer_ul">
+                    <li class="flex-box1">
+                        <div>储衣价：</div>
+                        <span>{{selectone.useBoxPrice}}</span>
+                    </li>
+                    <li class="flex-box1">
+                        <div>订单总价：</div>
+                        <span>{{selectone.totalPrice}}</span>
+                    </li>
+                </ul>
+            </div>
+            <hr>
+            <div class="tit-box flex-box1">
+                <h3>异常信息</h3>
+                <span><a id="abnormal" href="javascript:void(0)">查看</a></span>
+            </div>
+            <div class="row layer_conul" id="abnormaldetails" style="display: none;">
+                {% for item in selectone.errorList %}
+                <ul style="clear: both;">
+                    <li class="li_w25">发现异常事件：{{item.failType}}</li>
+                    <li class="li_w25">{{item.createTime}}</li>
+                    <li class="li_w25">{{item.handler}}</li>
+                    <li class="li_w25">{{item.handlerPhone}}</li>
+                    <li class="li_w100">导致异常订单原因：{{item.reason}}</li>
+                    <li class="li_w100">异常事件处理结果：{{item.dealWithResult}}</li>
+                </ul>
+                {% endfor %}
+            </div>
+            <hr>
+            <div style="text-align: center;">
+                <a class="btn btn1 btn-default btn-xs" class="check_comp" onclick="Closefixed()">取消</a>
+            </div>
+        </div>
+    </div>
+    <div class="layer_con" id="smark">
+            <div class="shaw"></div>
+            
+            
+    </div>
+</div>
+    <script>
+        function smark(id){
+            layer.open({
+                type: 2,
+                title: '箱格数',
+                shadeClose: true,
+                shade: 0.2,
+                area: ['500px', '90%'],
+                content: '/operate/order/smarkone?id='+id //iframe的url
+            });
+        }
+        //衣物信息显隐
+        $("#clothes").click(function(){
+            var clothes = $("#clothesdetails").is(":hidden");
+            if(clothes){
+                $("#clothesdetails").show();
+            }else{
+                $("#clothesdetails").hide();
+            }
+        });
+        //异常信息显隐
+        $("#abnormal").click(function(){
+            var clothes = $("#abnormaldetails").is(":hidden");
+            if(clothes){
+                $("#abnormaldetails").show();
+            }else{
+                $("#abnormaldetails").hide();
+            }
+        });
+        //关闭弹窗
+        function Closefixed(){
+            var index = parent.layer.getFrameIndex(window.name);
+            parent.layer.close(index);
+        }
+    </script>
+</body>
+
+</html>

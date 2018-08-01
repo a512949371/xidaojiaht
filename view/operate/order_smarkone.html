@@ -1,0 +1,82 @@
+{% extends "./base_toAdd.html" %}
+{% block customTitle_src %}
+<div class="ibox-title">
+	<h5>订单管理</h5>
+</div>
+{% endblock %} 
+{% block form_top %}
+{% endblock %}
+{% block form %}
+ <div class="onedetail-box" id="smakrbox">
+        <div class="smark-status">
+                <div class="flex-box">
+                    <div class="list-box">
+                        <div class="flex-box">
+                        <div class="listtwo {% if smarkdata.cabinetBoxlist[0].status=='-1'%}color-4{% elif smarkdata.cabinetBoxlist[0].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBoxlist[0].status}}{% endif %} ">{{smarkdata.cabinetBoxlist[0].boxId}}</div>
+                        <div class="listtwo {% if smarkdata.cabinetBoxlist[1].status=='-1'%}color-4{% elif smarkdata.cabinetBoxlist[1].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBoxlist[1].status}}{% endif %}">{{smarkdata.cabinetBoxlist[1].boxId}}</div>
+                        </div>
+                    </div>
+                    <div class="list-box">
+                        <div class="flex-box">
+                        <div class="listtwo {% if smarkdata.cabinetBoxlist[2].status=='-1'%}color-4{% elif smarkdata.cabinetBoxlist[2].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBoxlist[2].status}}{% endif %}">{{smarkdata.cabinetBoxlist[2].boxId}}</div>
+                        <div class="listtwo {% if smarkdata.cabinetBoxlist[3].status=='-1'%}color-4{% elif smarkdata.cabinetBoxlist[3].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBoxlist[3].status}}{% endif %}">{{smarkdata.cabinetBoxlist[3].boxId}}</div>
+                        </div>
+                    </div>
+                    <div class="list-box" style="border-bottom: 1px solid #e5e5e5;">
+                        
+                    </div>
+                    <div class="list-box">
+                        <div class="listone {% if smarkdata.cabinetBox[0].status=='-1'%}color-4{% elif smarkdata.cabinetBox[0].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBox[0].status}}{% endif %}">{{smarkdata.cabinetBox[0].boxId}}</div>
+                        <div class="listone {% if smarkdata.cabinetBox[2].status=='-1'%}color-4{% elif smarkdata.cabinetBox[2].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBox[2].status}}{% endif %}">{{smarkdata.cabinetBox[2].boxId}}</div>
+                        <div class="listone {% if smarkdata.cabinetBox[4].status=='-1'%}color-4{% elif smarkdata.cabinetBox[4].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBox[4].status}}{% endif %}">{{smarkdata.cabinetBox[4].boxId}}</div>
+                    </div>
+                    <div class="list-box">
+                        <div class="listone {% if smarkdata.cabinetBox[1].status=='-1'%}color-4{% elif smarkdata.cabinetBox[1].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBox[1].status}}{% endif %}">{{smarkdata.cabinetBox[1].boxId}}</div>
+                        <div class="listone {% if smarkdata.cabinetBox[3].status=='-1'%}color-4{% elif smarkdata.cabinetBox[3].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBox[3].status}}{% endif %}">{{smarkdata.cabinetBox[3].boxId}}</div>
+                        <div class="listone {% if smarkdata.cabinetBox[5].status=='-1'%}color-4{% elif smarkdata.cabinetBox[5].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBox[5].status}}{% endif %}">{{smarkdata.cabinetBox[5].boxId}}</div>
+                    </div>
+                </div>
+                <div class="flex-box">
+                    <div class="list-box">
+                        <div class="flex-box">
+                        <div class="listtwo {% if smarkdata.cabinetBoxlist[4].status=='-1'%}color-4{% elif smarkdata.cabinetBoxlist[4].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBoxlist[4].status}}{% endif %}">{{smarkdata.cabinetBoxlist[4].boxId}}</div>
+                        <div class="listtwo {% if smarkdata.cabinetBoxlist[5].status=='-1'%}color-4{% elif smarkdata.cabinetBoxlist[5].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBoxlist[5].status}}{% endif %}">{{smarkdata.cabinetBoxlist[5].boxId}}</div>
+                        </div>
+                    </div>
+                    <div class="list-box">
+                        <div class="flex-box">
+                        <div class="listtwo {% if smarkdata.cabinetBoxlist[6].status=='-1'%}color-4{% elif smarkdata.cabinetBoxlist[6].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBoxlist[6].status}}{% endif %}">{{smarkdata.cabinetBoxlist[6].boxId}}</div>
+                        <div class="listtwo {% if smarkdata.cabinetBoxlist[7].status=='-1'%}color-4{% elif smarkdata.cabinetBoxlist[7].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBoxlist[7].status}}{% endif %}">{{smarkdata.cabinetBoxlist[7].boxId}}</div>
+                        </div>
+                    </div>
+                    <div class="list-box">
+                        <div class="listthree {% if smarkdata.cabinetBox[12].status=='-1'%}color-4{% elif smarkdata.cabinetBox[12].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBox[12].status}}{% endif %}">{{smarkdata.cabinetBox[12].boxId}}</div>
+                        <div class="listthree {% if smarkdata.cabinetBox[13].status=='-1'%}color-4{% elif smarkdata.cabinetBox[13].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBox[13].status}}{% endif %}">{{smarkdata.cabinetBox[13].boxId}}</div>
+                        <div class="listthree {% if smarkdata.cabinetBox[14].status=='-1'%}color-4{% elif smarkdata.cabinetBox[14].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBox[14].status}}{% endif %}">{{smarkdata.cabinetBox[14].boxId}}</div>
+                    </div>
+                    <div class="list-box">
+                        <div class="listone {% if smarkdata.cabinetBox[6].status=='-1'%}color-4{% elif smarkdata.cabinetBox[6].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBox[6].status}}{% endif %}">{{smarkdata.cabinetBox[6].boxId}}</div>
+                        <div class="listone {% if smarkdata.cabinetBox[8].status=='-1'%}color-4{% elif smarkdata.cabinetBox[8].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBox[8].status}}{% endif %}">{{smarkdata.cabinetBox[8].boxId}}</div>
+                        <div class="listone {% if smarkdata.cabinetBox[10].status=='-1'%}color-4{% elif smarkdata.cabinetBox[10].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBox[10].status}}{% endif %}">{{smarkdata.cabinetBox[10].boxId}}</div>
+                    </div>
+                    <div class="list-box">
+                        <div class="listone {% if smarkdata.cabinetBox[7].status=='-1'%}color-4{% elif smarkdata.cabinetBox[7].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBox[7].status}}{% endif %}">{{smarkdata.cabinetBox[7].boxId}}</div>
+                        <div class="listone {% if smarkdata.cabinetBox[9].status=='-1'%}color-4{% elif smarkdata.cabinetBox[9].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBox[9].status}}{% endif %}">{{smarkdata.cabinetBox[9].boxId}}</div>
+                        <div class="listone {% if smarkdata.cabinetBox[11].status=='-1'%}color-4{% elif smarkdata.cabinetBox[11].status=='-3' %}color-4{% else %}color-{{smarkdata.cabinetBox[11].status}}{% endif %}">{{smarkdata.cabinetBox[11].boxId}}</div>
+                    </div>
+                </div>
+            </div>
+ </div>
+{% endblock %}
+{% block form_submit %}
+<div class="btn-box btn-box1 flex-box-center">
+	<div class="btn btn1 btn-success btn-xs" onclick="Closefixed()">关闭</div>
+</div>
+<script>
+	//关闭弹窗
+    function Closefixed(){  
+    	var index = parent.layer.getFrameIndex(window.name);
+		parent.layer.close(index);
+    }
+</script>
+{% endblock %}

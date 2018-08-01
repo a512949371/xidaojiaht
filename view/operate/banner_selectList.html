@@ -1,0 +1,104 @@
+{% extends "./base_list.html" %}
+{% block customTitle_src %}
+<div class="ibox-title">
+	<h5>广告管理</h5>
+</div>
+{% endblock %} 
+{% block content_top %}
+<div class="flex-box-enter">
+		<div>&nbsp;</div>
+	<div>
+		{% if Btn['smark/banner/insert'] %}
+		<div class="top-search-box">
+		<div class="qcode-box" onclick="Adddetail($(this))"><i class="fa fa-plus" style="padding-right: 5px;"></i>新增</div>
+		</div>
+		{% endif %}
+	</div>
+</div>
+<script>
+	function Adddetail(){
+		layer.open({
+		  type: 2,
+		  title: '新增图片广告',
+		  shadeClose: true,
+		  shade: 0.8,
+		  area: ['600px', '500px'],
+		  content: 'addbanner' //iframe的url
+		});
+	}
+	function Searchparme(){
+		$("#pageNum").val("1");
+		document.forms[0].submit();
+	}
+</script>
+{% endblock %}
+{% block search_bt %}
+{% endblock %}
+{% block table_th %}
+	<th>编号</th>
+	<th>广告名称</th>
+	<th>广告图片</th>
+	<th>所在位置</th>
+	<th>顺序</th>
+	<th>添加时间</th>
+	<th>操作</th>
+{% endblock %}
+{% block table_body %}
+{% for item in pageInfo.list %}
+<tr class="gradeX">
+	<td><input type="checkbox" name="ids" value="{{item.id}}"/></td>
+	<td>{{item.id}}</td>
+	<td>{{item.name}}</td>
+	<td><img src="{{item.advimg}}" style="width: 80px;height: 80px;"/></td>
+	<td>{% if item.advType ==1 %}<span>首页广告</span>{% else %}<span>锁屏广告</span>{% endif %}</td>
+	<td>{{item.sort}}</td>
+	<td>{{item.createTime}}</td>
+	<td>
+		{% if Btn['smark/banner/select'] %}
+		<button type="button" class="btn btn-primary btn-xs" data-id = "{{item.id}}" onclick="Lookdetail($(this))">
+				<i class="fa fa-list" style="padding-right: 5px;"></i>查看</button>
+		{% endif %}
+		{% if Btn['smark/banner/delete'] %}
+		<button type="button" class="btn btn-danger btn-xs" data-id = "{{item.id}}" onclick="Deletedetail($(this))">
+				<i class="fa fa-trash" style="padding-right: 5px;"></i>删除</button>
+		{% endif %}
+	</td>
+</tr>
+{% endfor %}
+<script>
+	function Lookdetail(obj){
+		layer.open({
+			  type: 2,
+			  title: '查看广告详情',
+			  shadeClose: true,
+			  shade: 0.8,
+			  area: ['600px', '500px'],
+			  content: 'selectone?id='+obj.attr("data-id") //iframe的url
+			});
+	}
+	function Deletedetail(obj){
+		layer.confirm('您确定要删除该条广告？', {
+		  btn: ['是的','取消'] //按钮
+		}, function(){
+		  $.ajax({
+		  	type:"get",
+		  	url:"removebannerone?id="+obj.attr("data-id"),
+		  	async:true,
+		  	success:function(data){
+		  		if(data.status==0){
+		  			layer.msg('删除成功');
+		  			setTimeout(function(){
+		  				window.location.reload()
+		  			},1000)
+		  		}else{
+		  			layer.msg(data.msg);
+		  		}
+		  		
+		  	}
+		  });
+		}, function(){
+		  console.log("取消")
+		});
+	}
+</script>
+{% endblock %}

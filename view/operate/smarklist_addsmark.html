@@ -1,0 +1,146 @@
+{% extends "./base_toAdd.html" %}
+{% block customTitle_src %}
+<div class="ibox-title">
+	<h5>柜体管理</h5>
+</div>
+{% endblock %} 
+{% block form_top %}
+{% endblock %}
+{% block form %}
+<div class="form" id="Addsmark">
+	<div class="form-item form-item1">
+		<label class="desc">柜子名称</label>
+		<input type="text" name="name" placeholder="请输入柜子名称"
+		 data-rule="required;name;" data-msg-required="请输入柜子名称">
+	</div>
+	<div class="form-item form-item1">
+		<label class="desc">所在位置</label>
+		<input type="text" name="address" placeholder="请输入所在位置"
+		data-rule="required;address;" data-msg-required="请输入所在位置" style="width: 230px;">
+		<span class="map" onclick="Openmap($(this))"><img src="/static/hplus/img/icon_map.png"></span>
+	</div>
+	<div class="form-item form-item1">
+		<label class="desc">所在组别</label>
+		<select name="gender" data-rule="required" data-msg-required="请选择所在组别">
+			<option value="" selected="selected">请选择所在组别</option>
+			{% for item in smarkgroupdata %}
+			<option value="{{item.id}}">{{item.groupName}}</option>
+			{% endfor %}
+		</select>
+	</div>
+	<div class="form-item form-item1">
+		<label class="desc">横格数量</label>
+		<input type="text" name="smallBox" placeholder="默认15个">
+	</div>
+	<div class="form-item form-item1">
+		<label class="desc">竖格数量</label>
+		<input type="text" name="bigBox" placeholder="默认8个">
+	</div>
+	<div class="form-item form-button form-button1">
+		<a class="btn btn-primary btn-xs" id="{{clothesonedata.id}}" onclick="Trueupdata($(this))">提交</a>
+		<a class="btn btn-default btn-xs" onclick="Closefixed()">取消</a>
+	</div>
+</div>
+<!-- <div class="addsmark-box" id="Addsmark">
+	<div class="addsmark flex-box">
+		<div class="left">柜子名称:</div>
+		<input class="input-w" type="text"/>
+	</div>
+	<div class="addsmark flex-box">
+		<div class="left">所在位置:</div>
+		<input class="input-w" type="text"/>
+		<span class="map" onclick="Openmap($(this))"><img src="/static/hplus/img/icon_map.png"></span>
+	</div>
+	<div class="addsmark flex-box">
+		<div class="left">所在组别:</div>
+		<select class="select-w">
+			{% for item in smarkgroupdata %}
+			<option value="{{item.id}}">{{item.groupName}}</option>
+			{% endfor %}
+		</select>
+	</div>
+	<div class="addsmark flex-box">
+		<div class="left">横格数量:</div>
+		<input class="input-w" type="text" placeholder="默认15个"/>
+	</div>
+	<div class="addsmark flex-box">
+		<div class="left">竖格数量:</div>
+		<input class="input-w" type="text" placeholder="默认8个"/>
+	</div>
+</div> -->
+{% endblock %}
+{% block form_submit %}
+<!-- <div class="addsmark-btn-box flex-box-center">
+	<div class="btn btn-success btn-xs" data-id="{{clothesonedata.id}}" onclick="Trueupdata($(this))">确认提交</div>
+	<div class="btn btn-primary btn-xs" onclick="Closefixed()">取消</div>
+</div> -->
+
+<script>
+	//关闭弹窗
+    function Closefixed(){
+    	var index = parent.layer.getFrameIndex(window.name);
+		parent.layer.close(index);
+    }
+    //确认修改
+    function Trueupdata(obj){
+    	let data ={
+    		name:$("#Addsmark").find("input").eq(0).val(),
+    		address:$("#Addsmark").find("input").eq(1).val(),
+    		cabinetGroupId:$("#Addsmark").find("select").eq(0).val(),
+    		smallBox:$("#Addsmark").find("input").eq(2).val()||'15',
+    		bigBox:$("#Addsmark").find("input").eq(3).val()||'8',
+    		latitude:sessionStorage.getItem("latitude")||'',
+    		longitude:sessionStorage.getItem("longitude")||''
+    	}
+    	console.log(data)
+    	if(data.name!=''&&data.address!=''&&data.cabinetGroupId!=''&&data.latitude!=''&&data.longitude!=''){
+			$.ajax({
+	    		type:"post",
+	    		url:"addsmarkinfo",
+	    		async:true,
+	    		data:data,
+	    		success:function(data){
+	    			if(data.status==0){
+	    				layer.msg('新增成功');
+	    				sessionStorage.removeItem("latitude");
+	    				sessionStorage.removeItem("longitude");
+						var index = parent.layer.getFrameIndex(window.name);
+						setTimeout(function(){
+							parent.layer.close(index);
+							window.parent.location.reload()
+							}, 1000);
+	    			}else{
+
+	    				layer.msg(data.msg);
+	    			}
+	    		}
+	    	});    		
+    	}else{
+    		if(data.name==''){
+    			layer.msg('柜子名称不能为空');
+    		}else if(data.name==''){
+    			layer.msg('地址不能为空');
+    		}else if(data.name==''){
+    			layer.msg('柜子所属组别不能为空');
+    		}else{
+    			layer.msg('地址坐标不能为空');
+    		}
+    		
+    	}
+    	
+    }
+    //打开地图
+    function Openmap(obj){
+ 		layer.open({
+			  type: 2,
+			  title: '选择位置',
+			  shadeClose: true,
+			  shade: 0.8,
+			  area: ['600px', '600px'],
+			  content: 'additude?longitude=102.767143&latitude=24.952912' //iframe的url
+			});
+ 	}
+</script>
+{% endblock %}
+{% block form_scr %}
+{% endblock %}

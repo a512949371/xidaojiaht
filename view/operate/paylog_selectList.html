@@ -1,0 +1,86 @@
+{% extends "../operate/base_list.html" %} 
+{% block customTitle_src %}
+<div class="ibox-title">
+	<h5>交易管理</h5>
+</div>
+{% endblock %} 
+{% block content_top %}
+<div class="flex-box-enter">
+	<div>
+   <div class="top-search-box" >
+   	<input type="text" placeholder="请输入交易单号、手机号、订单号" name="parame" value="{{querymodel.parame}}" />
+   	<select name="type" >
+   		 {% if querymodel.type==0 %}
+			<option value="">请选择交易类型</option>
+			<option value="0" selected="selected">微信订单支付</option>
+			<option value="1">充值</option>
+			{% elif querymodel.type==1 %}
+			<option value="">请选择交易类型</option>
+			<option value="0">微信订单支付</option>
+			<option value="1" selected="selected">充值</option>
+			{% else %}
+			<option value="">请选择交易类型</option>
+			<option value="0">微信订单支付</option>
+			<option value="1">充值</option>
+   		 {% endif %}
+   	</select>
+   	<div class="btn-box" onclick="Searchparme()">
+			<i class="glyphicon glyphicon-search" style="padding-right: 5px;"></i>搜索
+		</div>
+   </div>
+  </div>
+</div>
+{% endblock %}
+{% block search_bt %}
+{% endblock %}
+{% block table_th %}
+	<th class="tg-thead">编号</th>
+	<th class="tg-thead">相关订单号</th>
+	<th class="tg-thead">用户姓名</th>
+	<th class="tg-thead">手机号</th>
+	<th class="tg-thead">交易金额</th>
+	<th class="tg-thead">交易类型</th>
+	<th class="tg-thead">交易时间</th>
+	<th class="tg-thead">交易结果</th>
+	<th class="tg-thead">交易单号</th>
+{% endblock %}
+{% block table_body %}
+{% for item in pageInfo.list %}
+<tr class="gradeX">
+	<td><input type="checkbox" name="ids" value="{{item.id}}"/></td>
+	<td>{{item.id}}</td>
+	<td>{{item.payNo}}</td>
+	<td>{{item.name}}</td>
+	<td>{{item.phone}}</td>
+	<td>{{item.callBackFee}}</td>
+	<td>
+		{% if item.type == 0 %}
+		微信订单支付
+		{% endif %}
+		{% if item.type == 1 %}
+		充值
+		{% endif %}
+	</td>
+	<td>{{item.callBackTime}}</td>
+	<td>
+		{% if item.status == 0 %}
+		未支付
+		{% endif %}
+		{% if item.status == 1 %}
+		已支付
+		{% endif %}
+		{% if item.status == 2 %}
+		支付失败
+		{% endif %}
+	</td>
+	<td>{{item.wxPayNo}}</td>
+</tr>
+{% endfor %}
+<script>
+	
+	function Searchparme(){
+		$("#pageNum").val("1");
+		document.forms[0].submit();
+	}
+</script>
+{% endblock %}

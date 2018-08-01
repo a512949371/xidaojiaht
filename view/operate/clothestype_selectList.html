@@ -1,0 +1,240 @@
+{% extends "./base_list.html" %}
+{% block customTitle_src %}
+ <div class="ibox-title">
+ 	<a class="clothes-abox " href="/operate/clothes/selectList">衣物类型</a>
+ 	<a class="clothes-abox ml10 active" href="/operate/clothestype/selectList">衣物类别</a>
+ 	<a class="clothes-abox ml10" href="/operate/clothescolor/selectList">颜色</a>
+ 	<a class="clothes-abox ml10" href="/operate/clothesbrand/selectList">品牌</a>
+ 	<a class="clothes-abox ml10" href="/operate/clotheserr/selectList">瑕疵</a>
+ </div>
+{% endblock %}
+{% block content_top %}
+<div class="flex-box-enter">
+		<div>&nbsp;</div>
+	{% if Btn['operate/clothes/insert'] %}
+   <div class="qcode-box" onclick="Lookdetail($(this),'1')"><i class="fa fa-plus" style="padding-right: 5px;"></i>新增</div>
+   {% endif %}
+</div>
+{% endblock %}
+{% block search_bt %}
+{% endblock %}
+{% block table_th %}
+	<th>编号</th>
+	<th>衣物大类</th>
+	<th>创建时间</th>
+	<th>操作</th>
+{% endblock %}
+{% block table_body %}
+{% for item in pageInfo.list %}
+<tr class="gradeX">
+	<td><input type="checkbox" name="ids" value="{{item.clothesParamsId}}"/></td>
+	<td>{{item.clothesParamsId}}</td>
+	<td>{{item.name}}</td>
+	<td>{{item.createTime}}</td>
+	<td>
+		{% if Btn['operate/clothes/select'] %}
+		<button type="button" class="btn btn-primary btn-xs" data-img="{{item.classAppImg}}" data-id="{{item.clothesParamsId}}" onclick="Lookdetail($(this),'2')">
+				<i class="fa fa-pencil" style="padding-right: 5px;"></i>修改</button>
+	    {% endif %}
+	</td>
+</tr>
+{% endfor %}
+<script>
+	function Lookdetail(id){
+		
+	}
+</script>
+{% endblock %}
+{% block shawbox %}
+ <div class="fixed-box" id="Fixedbox">
+ 	<div class="tit flex-box-enter">
+ 		<span>添加衣物类别</span>
+ 		<span class="cursor-p" onclick="Closefixed()">X</span>
+ 	</div>
+	<div class="gray-bg">
+		<div class="wrapper wrapper-content animated fadeInRight">
+			<!-- <div class="form-box ibox-content">
+				<form class="form" data-validator-option="{timely:2}">
+					<div class="form-item">
+						<label class="desc">衣物大类</label>
+						<input type="text" name="name" placeholder="请输入衣物大类"
+						 data-rule="required; name" data-msg-required="请输入衣物大类">
+					</div>
+					<div class="form-item">
+						<label class="desc">所属分类</label>
+						<select name="gender" data-rule="required" data-msg-required="请选择所属分类">
+							<option value="" selected="selected">请选择所属分类</option>
+							{% for item in allclothesdata %}
+							<option value="{{item.id}}">{{item.name}}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<div class="form-item">
+						<label class="desc from-desc">图片</label>
+							<input type="hidden" value="" name="img" id="img">
+							<input class="input-file" type="file" class="form-control" id="productImg" name="imgFile"
+							data-rule="required; name" data-msg-required="请上传图片">
+					</div>
+					<div class="form-item">
+						<div class="form-img">
+							<img src="" width="80" height="80" id="picImg">
+							<input class="file_input" type="button" value="上传图片" onclick="checkImg('picImg','productImg','img')" />
+							<span style="color: red;">*上传图片限制小于 200kb</span>
+						</div>
+					</div>
+					<div class="form-item form-button">
+						<button class="btn btn-primary btn-xs" onclick="Insertdata()" type="submit">提交</button>
+						<button class="btn btn-default btn-xs" onclick="Closefixed()">取消</button>
+					</div>
+				</form>
+			</div> -->
+			<div class="form-box ibox-content from">
+					<div class="form-item">
+						<label class="desc">衣物大类</label>
+						<input type="text" name="name" placeholder="请输入衣物大类"
+						 data-rule="required; name" data-msg-required="请输入衣物大类">
+					</div>
+					<div class="form-item">
+						<label class="desc">所属分类</label>
+						<select name="gender" data-rule="required" data-msg-required="请选择所属分类">
+							<option value="" selected="selected">请选择所属分类</option>
+							{% for item in allclothesdata %}
+							<option value="{{item.id}}">{{item.name}}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<div class="form-item">
+						<label class="desc from-desc">图片</label>
+							<input type="hidden" value="" name="img" id="img">
+							<input class="input-file" type="file" class="form-control" id="productImg" name="imgFile"
+							data-rule="required; name" data-msg-required="请上传图片">
+					</div>
+					<div class="form-item">
+						<div class="form-img">
+							<img src="" width="80" height="80" id="picImg">
+							<input class="file_input" type="button" value="上传图片" onclick="checkImg('picImg','productImg','img')" />
+							<span style="color: red;">*上传图片限制小于 200kb</span>
+						</div>
+					</div>
+					<div class="form-item form-button">
+						<a class="btn btn-primary btn-xs" onclick="Insertdata()">提交</a>
+						<a class="btn btn-default btn-xs" onclick="Closefixed()">取消</a>
+					</div>
+			</div>
+		</div>
+	</div>
+ </div>
+ <script src="/static/kindeditor/kindeditor-min.js"></script>
+<script src="/static/js/ajaxfileupload.js"></script>
+<script>
+    var uploadUrl = "uploadimg";
+    function Lookdetail(obj,num){
+    	if(num==1){
+    		$("#Fixedbox").show()
+    	}
+    	if(num==2){
+    		layer.open({
+			  type: 2,
+			  title: '添加衣物类别',
+			  shadeClose: true,
+			  shade: 0.8,
+			  area: ['600px', '500px'],
+			  content: 'selectone?id='+obj.attr("data-id") //iframe的url
+			}); 
+    	}
+    	
+    }
+    //关闭弹窗
+    function Closefixed(){
+    	$("#img").val("")
+    	$("#Fixedbox").hide()
+    }
+    //新增一条数据
+    function Insertdata(){
+    	let data ={
+    		pid:$("#Fixedbox").find("select option:selected").val(),
+    		name:$("#Fixedbox").find("input").eq(0).val(),
+    		type:1,
+    		typeImg:$("#img").val(),
+		}
+		console.log("msg",data);
+    	if(data.name!=''&&data.pid!=''&&data.typeImg!=''){
+    		$.ajax({
+	    		type:"post",
+	    		url:"insertclothes",
+	    		async:true,
+	    		data:data,
+	    		success:function(data){
+	    			if(data.status==0){
+	    				layer.msg('新增成功');
+	    				$("#Fixedbox").hide()
+	    				setTimeout(function(){
+	    					window.location.reload()
+	    				},2000)
+	    			}else{
+	    				layer.msg(data.msg);
+	    			}
+	    		}
+	    	});
+    	}else{
+
+    		if(data.name==''){
+    			layer.msg('衣物大类不能为空');
+    		}else if(data.pid ==''){
+    			layer.msg('所属分类不能为空');
+    		}else{
+    			layer.msg('图片不能为空');
+    		}
+    	}
+    	
+    }
+    function checkImg(img,imgFile,imgUrl) {
+        var ths=$('#'+imgFile);
+        if (ths.val().length <= 0) {
+            alert("请上传图片");
+            return false;
+        } else if(!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(ths.val())){
+            alert("图片类型必须是.gif,jpeg,jpg,png中的一种");
+            ths.val("");
+            return false;
+        }
+        //效验成功调用异步上传函数
+        ajaxFileUpload(img,imgFile,imgUrl);
+        return true;
+    }
+
+    function ajaxFileUpload(img,imgFile,imgUrl) {
+        $.ajaxFileUpload
+        (
+            {
+                url: uploadUrl, //用于文件上传的服务器端请求地址
+                type: 'post',
+                secureuri: false, //是否需要安全协议，一般设置为false
+                fileElementId: imgFile, //文件上传域的ID
+                dataType: 'text', //返回值类型 一般设置为json
+                success: function (data)  //服务器成功响应处理函数
+                {
+                	data = $.parseJSON(data.replace(/<.*?>/ig,"")); 
+                	console.log(data);
+                	if(data.status==200){
+	                        console.log(data);
+	                        $("#"+imgUrl).val("/"+data.realUrl);
+	                        $('#'+img).attr("src", data.data);
+	                        $('#'+img).show();
+	                   
+                	}else{
+                		layer.msg(data.data);
+                	}
+                    
+                },
+                error: function (data)//服务器响应失败处理函数
+                {
+                    alert(data);
+                }
+            }
+        )
+        return false;
+    }
+
+</script>
+{% endblock %}
